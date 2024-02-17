@@ -1,9 +1,9 @@
 import React from "react";
-import orderIcon from "../assets/order.svg";
-import signoutIcon from "../assets/sign-out.svg";
-import userIcon from "../assets/user.svg";
-import menuIcon from "../assets/menu.svg";
-import chartIcon from "../assets/metrics.svg";
+import orderIcon from "../../assets/order.svg";
+import signoutIcon from "../../assets/sign-out.svg";
+import userIcon from "../../assets/user.svg";
+import menuIcon from "../../assets/menu.svg";
+import chartIcon from "../../assets/metrics.svg";
 import { Link } from "react-router-dom";
 function SideNavBar() {
   return (

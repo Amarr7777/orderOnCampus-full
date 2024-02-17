@@ -1,11 +1,11 @@
 import React from "react";
-import SideNavBar from "../components/SideNavBar";
-import Header from "../components/Header";
-import OrderComponent from "../components/OrderComponent";
+import SideNavBar from "../components/sidebar/SideNavBar";
+import Header from "../components/header/Header";
+import OrderComponent from "../components/order/OrderComponent";
 import { Route, Routes } from "react-router-dom";
-import MenuComponent from "../components/MenuComponent";
-import MetricsComponent from "../components/MetricsComponent";
-import ProfileComponent from "../components/ProfileComponent";
+import MenuComponent from "../components/menu/MenuComponent";
+import MetricsComponent from "../components/metrics/MetricsComponent";
+import ProfileComponent from "../components/profile/ProfileComponent";
 
 function CanteenStaff() {
   return (
@@ -17,7 +17,7 @@ function CanteenStaff() {
           <Route path="/" element={<OrderComponent />} />
           <Route path="/menu" element={<MenuComponent />} />
           <Route path="/metrics" element={<MetricsComponent />} />
-            <Route path="/profile" element={<ProfileComponent />} />
+          <Route path="/profile" element={<ProfileComponent />} />
         </Routes>
       </div>
     </div>

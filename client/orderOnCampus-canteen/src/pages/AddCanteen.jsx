@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./addCanteen.css";
-import GettingStarted from "../components/gettingStarted";
-import LoginForm from "../components/LoginForm";
-import RegisterForm from "../components/RegisterForm";
+import GettingStarted from "../components/landing/gettingStarted";
+import LoginForm from "../components/landing/LoginForm";
+import RegisterForm from "../components/landing/RegisterForm";
 function AddCanteen() {
   const [loginActive, setLoginActive] = useState(false);
   const [regActive, setReginActive] = useState(false);
