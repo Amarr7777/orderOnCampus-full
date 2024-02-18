@@ -15,7 +15,7 @@ function MenuComponent() {
           <input
             type="text"
             placeholder="search for items"
-            className="lg:w-1/6 rounded-md py-2 px-5 border border-gray-500 bg-gray-200"
+            className="lg:w-1/6 rounded-md py-2 px-5 border border-green-900 bg-gray-200"
           />
           <button
             onClick={addNewItem}
