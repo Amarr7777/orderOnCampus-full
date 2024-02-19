@@ -2,8 +2,10 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { FaApple, FaGoogle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function RegisterForm({ regActive, setReginActive }) {
+  
   if (!regActive) {
     return null;
   }
@@ -20,19 +22,31 @@ function RegisterForm({ regActive, setReginActive }) {
           />
         </div>
         <div className="flex items-center justify-center w-full">
-          <form action="#" method="post" className="space-y-5">
+          <form  method="post" className="space-y-5">
             <input
               type="Text"
               className="border rounded-lg w-full p-2  "
               placeholder="Full Name"
             />
             <input
-              type="Text"
+              type="email"
               className="border rounded-lg w-full p-2  "
               placeholder="Email"
             />
+            <input
+              type="password"
+              className="border rounded-lg w-full p-2  "
+              placeholder="password"
+            />
+            <input
+              type="password"
+              className="border rounded-lg w-full p-2  "
+              placeholder="Confirm password"
+            />
             <button className="bg-green-950 text-white rounded-lg py-2 px-5 w-full">
+            <Link to = "/registerCanteen">
               Create Account
+            </Link>
             </button>
             <div className="flex items-center gap-5 ">
               <input type="checkbox" />

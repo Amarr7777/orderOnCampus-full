@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const dishSchema = new Schema({
     name: String,
+    category: String,
     description: String,
     price: Number,
     image: String
