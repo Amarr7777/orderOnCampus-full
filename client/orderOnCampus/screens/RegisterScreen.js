@@ -14,15 +14,15 @@ export default function RegisterScreen() {
     const [password, setPassword] = useState('');
 
     const handleRegister = () => {
+        console.log("Pressed")
         const userData = {
             name: name,
             email,
             mobile,
             password,
         }
-        axios.post("http://192.168.1.15:5001/register", userData).then((res) => {
+        axios.post("http://0.0.0.0:5001/register", userData).then((res) => {
             console.log("working");
-            console.log("name password",mobile);
             console.log(res.data);
             navigation.navigate('Login');
         }).catch((e) => console.log(`error is ${e}`));

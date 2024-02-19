@@ -3,7 +3,9 @@ import "./addCanteen.css";
 import GettingStarted from "../components/landing/gettingStarted";
 import LoginForm from "../components/landing/LoginForm";
 import RegisterForm from "../components/landing/RegisterForm";
+
 function AddCanteen() {
+  
   const [loginActive, setLoginActive] = useState(false);
   const [regActive, setReginActive] = useState(false);
 

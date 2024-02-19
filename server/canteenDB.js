@@ -2,29 +2,24 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const dishSchema = new Schema({
-    name: String,
-    category: String,
-    description: String,
-    price: Number,
-    image: String
+    dishName: String,
+    // category: String,
+    dishDescription: String,
+    price: Number, 
+    // dishImage: String
 });
 
 const restaurantSchema = new Schema({
-    name: String,
-    image: String,
-    description: String,
+    canteenName: String,
+    // canteenImage: String,
+    canteenDescription: String,
     location: String,
     categories: [String],
     favorite: Boolean,
     dishes: [dishSchema]
-});
-
-const allCanteensSchema = new Schema({
-    title: String,
-    restaurants: [restaurantSchema]
 },{
     collection: "allCanteen"
 });
 
-mongoose.model('AllCanteens', allCanteensSchema);
+mongoose.model('AllCanteen', allCanteensSchema);
 
