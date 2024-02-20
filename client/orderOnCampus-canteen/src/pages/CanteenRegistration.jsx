@@ -3,8 +3,11 @@ import Header from "../components/header/Header";
 import CanteenInfo from "../components/registrationPage/CanteenInfo";
 import DishInfo from "../components/registrationPage/DishInfo";
 import axios from "axios";
-
+import { useNavigate } from 'react-router-dom';
 function CanteenRegistration() {
+  
+  const navigation = useNavigate()
+
   const [canteenName, setCanteenName] = useState("");
   const [location, setLoc] = useState("");
   const [canteenDescription, setDesc] = useState("");
@@ -33,7 +36,7 @@ function CanteenRegistration() {
       .post("http://localhost:5001/registerCanteen", restaurantData)
       .then((res) => {
         // Handle success, maybe navigate to another page
-        console.log(res);
+        // console.log();
         setCanteenName("");
         setLoc("");
         setDesc("");
@@ -41,6 +44,9 @@ function CanteenRegistration() {
         setDishName("");
         setDishDesc("");
         setPrice("");
+        navigation('/');
+        console.log("After navigation")
+        
       })
       .catch((error) => {
         console.log("Error: ", error);

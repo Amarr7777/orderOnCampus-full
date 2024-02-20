@@ -21,5 +21,5 @@ const restaurantSchema = new Schema({
     collection: "allCanteen"
 });
 
-mongoose.model('AllCanteen', allCanteensSchema);
+mongoose.model('AllCanteen', restaurantSchema);
 

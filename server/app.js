@@ -8,7 +8,7 @@ app.use(express.json())
 
 const bcrypt = require('bcryptjs')
 
-const mongoUrl = "mongodb+srv://amarpradeep0805:amar1221@cluster0.khkxyni.mongodb.net/?retryWrites=true&w=majority/orderOnCampus"
+const mongoUrl = "mongodb+srv://amarpradeep0805:amar1221@cluster0.khkxyni.mongodb.net/?retryWrites=true&w=majority"
 
 mongoose.connect(mongoUrl).then(() => {
     try {
