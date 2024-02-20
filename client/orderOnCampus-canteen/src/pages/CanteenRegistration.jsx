@@ -12,16 +12,30 @@ function CanteenRegistration() {
   const [location, setLoc] = useState("");
   const [canteenDescription, setDesc] = useState("");
   const [category, setCategory] = useState("");
+  const [canteenNameVerify, setCanteenNameVerify] = useState(false);
+  const [locationVerify, setLocVerify] = useState(false);
+  const [categoryVerify, setCategoryVerify] = useState(false);
   // const [number, setNumber] = useState("");
 
   const [dishName, setDishName] = useState("");
   const [dishDescription, setDishDesc] = useState("");
   const [price, setPrice] = useState("");
+  const [dishNameVerify, setDishNameVerify] = useState(false);
+  const [priceVerify, setPriceVerify] = useState(false);
+
+
+  
+
 
   const handleRegister = (e) => {
+    if(!dishNameVerify  || !priceVerify || !locationVerify || !canteenNameVerify || !categoryVerify){
+      alert('Please fill the madatory fields')
+      return
+    }
     console.log(canteenName)
     console.log(location)
     console.log(canteenDescription)
+    console.log(category)
     e.preventDefault();
     const restaurantData = {
       canteenName: canteenName,
@@ -65,11 +79,26 @@ function CanteenRegistration() {
           setLoc={setLoc}
           setDesc={setDesc}
           setCategory={setCategory}
+          canteenName = {canteenName}
+          location = {location}
+          category = {category}
+          canteenNameVerify={canteenNameVerify}
+          setCanteenNameVerify={setCanteenNameVerify}
+          setLocVerify={setLocVerify}
+          locationVerify={locationVerify}
+          categoryVerify={categoryVerify}
+          setCategoryVerify={setCategoryVerify}
         />
         <DishInfo
           setDishName={setDishName}
           setDishDesc={setDishDesc}
           setPrice={setPrice}
+          dishName = {dishName}
+          price = {price}
+          dishNameVerify={dishNameVerify}
+          setDishNameVerify={setDishNameVerify}
+          priceVerify={priceVerify}
+          setPriceVerify={setPriceVerify}
         />
         <div className="sticky inset-0 w-full flex gap-5 justify-end px-5 py-5 bg-white">
           <button 

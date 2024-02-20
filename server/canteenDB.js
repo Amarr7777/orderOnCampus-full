@@ -14,7 +14,7 @@ const restaurantSchema = new Schema({
     // canteenImage: String,
     canteenDescription: String,
     location: String,
-    categories: [String],
+    category: String,
     favorite: Boolean,
     dishes: [dishSchema]
 },{

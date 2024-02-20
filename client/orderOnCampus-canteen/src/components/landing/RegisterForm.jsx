@@ -22,7 +22,7 @@ function RegisterForm({ regActive, setReginActive }) {
           />
         </div>
         <div className="flex items-center justify-center w-full">
-          <form  method="post" className="space-y-5">
+          <form action="/registerCanteen"  method="post" className="space-y-5">
             <input
               type="Text"
               className="border rounded-lg w-full p-2  "
