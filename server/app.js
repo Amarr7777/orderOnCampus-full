@@ -20,7 +20,9 @@ mongoose.connect(mongoUrl).then(() => {
 
 require('./userDetails');
 require('./canteenDB')
+require('./canteenStaffDetails')
 const user = mongoose.model("userInfo");
+const canteenStaff = mongoose.model("canteenStaffDetails")
 const canteen = mongoose.model("AllCanteen");
 
 app.get("/", (req, res) => {
@@ -47,6 +49,25 @@ app.post("/register", async (req, res) => {
         res.send({ status: 'error', data: error });
     }
 
+})
+app.post("/registerCanteenStaff", async(req,res)=>{
+    const {name,email,password} = req.body
+    const oldUser = await canteenStaff.findOne({email : email});
+    if (oldUser) {
+        return res.send({ data: 'user already exists' })
+    }
+    const encryptedPassword = await bcrypt.hash(password, 10);
+
+    try{
+        await canteenStaff.create({
+            name,
+            email,
+            password: encryptedPassword,
+        })
+        res.send({status: 'ok', data: "canteen staff created"})
+    }catch(error){
+        res.send({status: 'error', data: error})
+    }
 })
 app.post("/registerCanteen", async (req, res) => {
     const { canteenName, location, canteenDescription, category, dishName, dishDescription, price } = req.body;

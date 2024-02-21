@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaCheckCircle, FaTicketAlt, FaTimesCircle } from "react-icons/fa";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 
 function CanteenInfo({
   setCanteenName,
@@ -58,7 +58,7 @@ function CanteenInfo({
           <input
             type="text"
             placeholder="Canteen Name"
-            className="py-3 px-2 rounded-md  w-full outline-0"
+            className="py-3 px-2 rounded-md  w-full outline-none"
             onChange={(e) => handleCanteenName(e)}
           />
           {canteenName.length < 1 ? null : canteenNameVerify ? (
@@ -76,7 +76,7 @@ function CanteenInfo({
           <input
             type="text"
             placeholder="Canteen Location (Basement Central Block)"
-            className="py-3 px-2 rounded-md  w-full outline-0"
+            className="py-3 px-2 rounded-md  w-full outline-none"
             onChange={(e) => handleCanteenLoc(e)}
           />
           {location.length < 1 ? null : locationVerify ? (
