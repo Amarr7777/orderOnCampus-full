@@ -76,7 +76,7 @@ app.post("/registerCanteenStaff", async (req, res) => {
 });
 
 // login canteen staff
-app.post("/loginStaff", async (req, res) => {
+app.post("/loginStaff", async (req, res) => { 
     const { email, password } = req.body;
     try {
         const user = await canteenStaff.findOne({ email: email });
@@ -101,6 +101,7 @@ app.post("/loginStaff", async (req, res) => {
     }
 });
 
+// register canteen
 app.post("/registerCanteen", async (req, res) => {
     const { canteenName, location, canteenDescription, category, dishName, dishDescription, price } = req.body;
     try {
