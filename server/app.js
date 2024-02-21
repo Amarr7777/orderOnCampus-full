@@ -29,46 +29,78 @@ app.get("/", (req, res) => {
     res.send({ status: "Server is running" });
 })
 
+// register user
 app.post("/register", async (req, res) => {
     const { name, email, mobile, password } = req.body;
     const oldUser = await user.findOne({ email: email });
 
     if (oldUser) {
         return res.send({ data: 'user already exists' })
-    }
-    const encryptedPassword = await bcrypt.hash(password, 10);
-    try {
-        await user.create({
-            name: name,
-            email: email,
-            mobile,
-            password: encryptedPassword,
-        });
-        res.send({ status: 'ok', data: "user created" });
-    } catch (error) {
-        res.send({ status: 'error', data: error });
+    }else {
+        const encryptedPassword = await bcrypt.hash(password, 10);
+        try {
+            await user.create({
+                name: name,
+                email: email,
+                mobile,
+                password: encryptedPassword,
+            });
+            res.send({ status: 'ok', data: "user created" });
+        } catch (error) {
+            res.send({ status: 'error', data: error });
+        }
     }
 
-})
-app.post("/registerCanteenStaff", async(req,res)=>{
-    const {name,email,password} = req.body
-    const oldUser = await canteenStaff.findOne({email : email});
+});
+
+// register canteen staff
+
+app.post("/registerCanteenStaff", async (req, res) => {
+    const { name, email, password } = req.body;
+    const oldUser = await canteenStaff.findOne({ email: email });
     if (oldUser) {
-        return res.send({ data: 'user already exists' })
+        res.json('user already exists')
+    } else {
+        const encryptedPassword = await bcrypt.hash(password, 10);
+        try {
+            await canteenStaff.create({
+                name,
+                email,
+                password: encryptedPassword,
+            });
+            res.send({ status: 'ok', data: "canteen staff created" });
+        } catch (error) {
+            res.status(500).send({ status: 'error', data: error });
+        }
     }
-    const encryptedPassword = await bcrypt.hash(password, 10);
+});
 
-    try{
-        await canteenStaff.create({
-            name,
-            email,
-            password: encryptedPassword,
-        })
-        res.send({status: 'ok', data: "canteen staff created"})
-    }catch(error){
-        res.send({status: 'error', data: error})
+// login canteen staff
+app.post("/loginStaff", async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await canteenStaff.findOne({ email: email });
+        if (user) {
+            console.log("found")
+            bcrypt.compare(password, user.password, (err, result) => {
+                if (err) {
+                    res.status(500).json("An error occurred");
+                }
+                if (result) {
+                    res.json("Success");
+                } else {
+                    res.json("Incorrect password");
+                }
+            });
+        } else {
+            res.json("No user found");
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("An error occurred");
     }
-})
+});
+
 app.post("/registerCanteen", async (req, res) => {
     const { canteenName, location, canteenDescription, category, dishName, dishDescription, price } = req.body;
     try {

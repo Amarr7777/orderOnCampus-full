@@ -73,12 +73,18 @@ function RegisterForm({ regActive, setReginActive }) {
       email,
       password
     }
-    axios.post("http://localhost:5001/registerCanteenStaff",data).then(()=>{
+    axios.post("http://localhost:5001/registerCanteenStaff",data).then((res)=>{
       setName('')
       setEmail('')
       setPassword('')
       setCpassword('')
-      navigation('/registerCanteen');
+      if(res.data === "user already exists"){
+        console.log("inside if ")
+        alert("Email Already in use")
+      }else{
+        console.log("outside if ")
+        navigation('/registerCanteen');
+      }
     }).catch((e)=>{
       console.log("error",e)
     });

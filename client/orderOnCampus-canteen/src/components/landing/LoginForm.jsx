@@ -1,15 +1,20 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
-import { FaApple, FaCheckCircle, FaGoogle, FaTimesCircle } from "react-icons/fa";
+import {
+  FaApple,
+  FaCheckCircle,
+  FaGoogle,
+  FaTimesCircle,
+} from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function LoginForm({ loginActive, setLoginActive }) {
-
-  const[email, setEmail] = useState("");
-  const[emailVerify,setEmailVerify] = useState(false)
-  const[password, setPassword] = useState("");
-  const[passwordVerify,setPasswordVerify] = useState(false)
+  const [email, setEmail] = useState("");
+  const [emailVerify, setEmailVerify] = useState(false);
+  const [password, setPassword] = useState("");
+  const [passwordVerify, setPasswordVerify] = useState(false);
 
   const navigation = useNavigate();
 
@@ -27,21 +32,42 @@ function LoginForm({ loginActive, setLoginActive }) {
     const value = e.target.value;
     setPassword(value);
     setPasswordVerify(false);
-    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;
-    if (regex.test(value)) {
+    if (value.length > 0) {
       setPasswordVerify(true);
     }
   };
 
-  const handleForm = (e)=>{
-    if(!emailVerify  || !passwordVerify){
-      alert('Please check your email and password');
-      return ;
-    }else{
-      navigation("/canteenStaff");
+  const handleForm = (e) => {
+    e.preventDefault();
+    if (!emailVerify || !passwordVerify) {
+        alert("Please check your email and password");
+        return;
+    } else {
+        const data = {
+            email: email,
+            password,
+        };
+        axios.post("http://localhost:5001/loginStaff", data)
+            .then((res) => {
+                setEmail('');
+                setPassword('');
+                if (res.data === "Success") {
+                    navigation("/canteenStaff");
+                } else if (res.data === "Incorrect password") {
+                    alert("Wrong Password!");
+                } else if (res.data === "No user found") {
+                    alert("No user found with this email id");
+                } else {
+                    alert("An error occurred. Please try again later.");
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                alert("An error occurred. Please try again later.");
+            });
     }
+};
 
-  }
 
   if (!loginActive) {
     return null;
@@ -65,35 +91,17 @@ function LoginForm({ loginActive, setLoginActive }) {
                 type="email"
                 className="outline-none rounded-lg w-full p-2  "
                 placeholder="Email"
-                onChange={(e)=>handleEmail(e)}
-              /> {email.length < 1 ? null : emailVerify ? (
-                <FaCheckCircle className="m-2 text-green-900" />
-              ) : (
-                <FaTimesCircle className="m-2 text-red-700 " />
-              )}
+                onChange={(e) => handleEmail(e)}
+              />
             </div>
-            {email.length < 1 ? null : emailVerify ? null : (
-              <p className="font-light text-sm text-red-700">
-                invalid Email
-              </p>
-            )}
             <div className="flex items-center border w-full  rounded-md">
               <input
                 type="password"
                 className="outline-none rounded-lg w-full p-2  "
                 placeholder="password"
-                onChange={(e)=>handlePassword(e)}
-              /> {password.length < 1 ? null : passwordVerify ? (
-                <FaCheckCircle className="m-2 text-green-900" />
-              ) : (
-                <FaTimesCircle className="m-2 text-red-700 " />
-              )}
+                onChange={(e) => handlePassword(e)}
+              />
             </div>
-            {password.length < 1 ? null : passwordVerify ? null : (
-              <p className="font-light text-sm text-red-700">
-                invalid password
-              </p>
-            )}
             <button
               className="bg-green-950 text-white rounded-lg py-2 px-5 w-full"
               type="submit"

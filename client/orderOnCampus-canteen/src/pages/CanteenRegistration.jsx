@@ -16,7 +16,6 @@ function CanteenRegistration() {
   const [canteenNameVerify, setCanteenNameVerify] = useState(false);
   const [locationVerify, setLocVerify] = useState(false);
   const [categoryVerify, setCategoryVerify] = useState(false);
-  // const [number, setNumber] = useState("");
 
   const [dishName, setDishName] = useState("");
   const [dishDescription, setDishDesc] = useState("");
