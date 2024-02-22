@@ -1,11 +1,11 @@
-const canteen = require('../model/canteenDB');
+const AllCanteen = require('../model/canteenDB');
 
 exports.registerCanteen = async (req, res) => {
-    // Logic for canteen registration
+    // Logic for canteen registration 
     const { canteenName, location, canteenDescription, category, dishName, dishDescription, price } = req.body;
     try {
         const newDish = { dishName, dishDescription, price };
-        await canteen.create({
+        await AllCanteen.create({
             canteenName,
             location: location,
             canteenDescription: canteenDescription,

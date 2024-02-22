@@ -1,15 +1,15 @@
 const bcrypt = require('bcryptjs');
-const user = require('../model/userDetails');
+const User = require('../model/userDetails');
 
 exports.registerUser = async (req, res) => {
     const { name, email, mobile, password } = req.body;
-    const oldUser = await user.findOne({ email: email });
+    const oldUser = await User.findOne({ email: email });
     if (oldUser) {
         res.json('exists')
     } else {
         const encryptedPassword = await bcrypt.hash(password, 10);
         try {
-            await user.create({
+            await User.create({
                 name: name,
                 email: email,
                 mobile,
@@ -25,7 +25,7 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const data = await user.findOne({ email: email });
+        const data = await User.findOne({ email: email });
         if (data) {
             console.log("found")
             bcrypt.compare(password, data.password, (err, result) => {

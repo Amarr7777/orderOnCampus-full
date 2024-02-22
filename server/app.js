@@ -5,6 +5,7 @@ const cors = require('cors');
 
 app.use(cors());
 app.use(express.json())
+const routes = require('./routes/routes');
 
 // const bcrypt = require('bcryptjs')
 

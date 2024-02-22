@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function LoginForm({ loginActive, setLoginActive }) {
-  const [email, setEmail] = useState(""); 
+  const [email, setEmail] = useState("");
   const [emailVerify, setEmailVerify] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState(false);
@@ -53,14 +53,12 @@ function LoginForm({ loginActive, setLoginActive }) {
       axios
         .post("http://localhost:5001/loginStaff", data)
         .then((res) => {
-          
-          
           setInvalidUser(false);
           setIncorrectPassword(false);
           if (res.data === "Success") {
             navigation("/canteenStaff");
           } else if (res.data === "Incorrect password") {
-            setIncorrectPassword(true)
+            setIncorrectPassword(true);
             setPassword("");
             // alert("Wrong Password!");
           } else if (res.data === "No user found") {
@@ -69,8 +67,8 @@ function LoginForm({ loginActive, setLoginActive }) {
             // alert("No user found with this email id");
           } else {
             alert("An error occurred. Please try again later.");
-            setEmail("")
-            setPassword("")
+            setEmail("");
+            setPassword("");
           }
         })
         .catch((error) => {
@@ -85,7 +83,7 @@ function LoginForm({ loginActive, setLoginActive }) {
   }
   return (
     <div className="fixed w-full inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center">
-      <div className="bg-white w-1/4 p-5 rounded-lg">
+      <div className="bg-white p-5 rounded-lg">
         <div className="flex items-center justify-between mb-10">
           <h4 className="text-gray-500 text-2xl ">Login</h4>
           <FontAwesomeIcon
@@ -95,7 +93,7 @@ function LoginForm({ loginActive, setLoginActive }) {
             color="gray"
           />
         </div>
-        <div className="flex items-center justify-center w-full">
+        <div className="flex items-center  justify-center w-full">
           <form onSubmit={handleForm} method="post" className="space-y-5">
             <div className="flex items-center border w-full  rounded-md">
               <input
@@ -105,11 +103,11 @@ function LoginForm({ loginActive, setLoginActive }) {
                 onChange={(e) => handleEmail(e)}
               />
             </div>
-              {invalidUser ? (
-                <p className="text-red-600 text-sm font-sm">
-                  No user found with this email id
-                </p>
-              ) : null}
+            {invalidUser ? (
+              <p className="text-red-600 text-sm font-sm">
+                No user found with this email id
+              </p>
+            ) : null}
             <div className="flex items-center border w-full  rounded-md">
               <input
                 type="password"
@@ -119,10 +117,8 @@ function LoginForm({ loginActive, setLoginActive }) {
               />
             </div>
             {incorrectPassword ? (
-                <p className="text-red-600 text-sm font-sm">
-                 Incorrect password
-                </p>
-              ) : null}
+              <p className="text-red-600 text-sm font-sm">Incorrect password</p>
+            ) : null}
             <button
               className="bg-green-950 text-white rounded-lg py-2 px-5 w-full"
               type="submit"

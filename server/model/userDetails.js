@@ -9,4 +9,5 @@ const userDetailsSchema = new mongoose.Schema({
     collection: "userInfo"
 });
 
-mongoose.model("userInfo",userDetailsSchema);
+const userDetails = mongoose.model("userInfo",userDetailsSchema);
+module.exports = userDetails ;
