@@ -33,9 +33,8 @@ app.get("/", (req, res) => {
 app.post("/register", async (req, res) => {
     const { name, email, mobile, password } = req.body;
     const oldUser = await user.findOne({ email: email });
-
     if (oldUser) {
-        return res.send({ data: 'user already exists' })
+        res.json('exists')
     }else {
         const encryptedPassword = await bcrypt.hash(password, 10);
         try {
@@ -47,7 +46,7 @@ app.post("/register", async (req, res) => {
             });
             res.send({ status: 'ok', data: "user created" });
         } catch (error) {
-            res.send({ status: 'error', data: error });
+            res.status(500).send({ status: 'error', data: error });
         }
     }
 

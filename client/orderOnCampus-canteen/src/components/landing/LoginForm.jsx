@@ -84,7 +84,7 @@ function LoginForm({ loginActive, setLoginActive }) {
     return null;
   }
   return (
-    <div className="fixed w-full inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center content-center">
+    <div className="fixed w-full inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center">
       <div className="bg-white w-1/4 p-5 rounded-lg">
         <div className="flex items-center justify-between mb-10">
           <h4 className="text-gray-500 text-2xl ">Login</h4>
