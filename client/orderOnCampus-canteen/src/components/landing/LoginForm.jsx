@@ -16,6 +16,9 @@ function LoginForm({ loginActive, setLoginActive }) {
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState(false);
 
+  const [invalidUser, setInvalidUser] = useState(false);
+  const [incorrectPassword, setIncorrectPassword] = useState(false);
+
   const navigation = useNavigate();
 
   const handleEmail = (e) => {
@@ -40,34 +43,42 @@ function LoginForm({ loginActive, setLoginActive }) {
   const handleForm = (e) => {
     e.preventDefault();
     if (!emailVerify || !passwordVerify) {
-        alert("Please check your email and password");
-        return;
+      alert("Please check your email and password");
+      return;
     } else {
-        const data = {
-            email: email,
-            password,
-        };
-        axios.post("http://localhost:5001/loginStaff", data)
-            .then((res) => {
-                setEmail('');
-                setPassword('');
-                if (res.data === "Success") {
-                    navigation("/canteenStaff");
-                } else if (res.data === "Incorrect password") {
-                    alert("Wrong Password!");
-                } else if (res.data === "No user found") {
-                    alert("No user found with this email id");
-                } else {
-                    alert("An error occurred. Please try again later.");
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-                alert("An error occurred. Please try again later.");
-            });
+      const data = {
+        email: email,
+        password,
+      };
+      axios
+        .post("http://localhost:5001/loginStaff", data)
+        .then((res) => {
+          
+          
+          setInvalidUser(false);
+          setIncorrectPassword(false);
+          if (res.data === "Success") {
+            navigation("/canteenStaff");
+          } else if (res.data === "Incorrect password") {
+            setIncorrectPassword(true)
+            setPassword("");
+            // alert("Wrong Password!");
+          } else if (res.data === "No user found") {
+            setEmail("");
+            setInvalidUser(true);
+            // alert("No user found with this email id");
+          } else {
+            alert("An error occurred. Please try again later.");
+            setEmail("")
+            setPassword("")
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("An error occurred. Please try again later.");
+        });
     }
-};
-
+  };
 
   if (!loginActive) {
     return null;
@@ -94,6 +105,11 @@ function LoginForm({ loginActive, setLoginActive }) {
                 onChange={(e) => handleEmail(e)}
               />
             </div>
+              {invalidUser ? (
+                <p className="text-red-600 text-sm font-sm">
+                  No user found with this email id
+                </p>
+              ) : null}
             <div className="flex items-center border w-full  rounded-md">
               <input
                 type="password"
@@ -102,6 +118,11 @@ function LoginForm({ loginActive, setLoginActive }) {
                 onChange={(e) => handlePassword(e)}
               />
             </div>
+            {incorrectPassword ? (
+                <p className="text-red-600 text-sm font-sm">
+                 Incorrect password
+                </p>
+              ) : null}
             <button
               className="bg-green-950 text-white rounded-lg py-2 px-5 w-full"
               type="submit"
