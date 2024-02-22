@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function LoginForm({ loginActive, setLoginActive }) {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(""); 
   const [emailVerify, setEmailVerify] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordVerify, setPasswordVerify] = useState(false);

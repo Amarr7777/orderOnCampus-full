@@ -51,6 +51,31 @@ app.post("/register", async (req, res) => {
     }
 
 });
+//login user
+app.post("/login",async(req, res)=>{
+    const {email, password} = req.body;
+    try {
+        const data = await user.findOne({ email: email });
+        if (data) {
+            console.log("found")
+            bcrypt.compare(password, data.password, (err, result) => {
+                if (err) {
+                    res.status(500).json("An error occurred");
+                }
+                if (result) {
+                    res.json("Success");
+                } else {
+                    res.json("Incorrect password");
+                }
+            });
+        } else {
+            res.json("No user found");
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("An error occurred");
+    }
+})
 
 // register canteen staff
 
