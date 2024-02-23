@@ -3,11 +3,16 @@ import Header from "../components/header/Header";
 import CanteenInfo from "../components/registrationPage/CanteenInfo";
 import DishInfo from "../components/registrationPage/DishInfo";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie'
+import {  useNavigate } from 'react-router-dom';
 function CanteenRegistration() {
   const navigation = useNavigate()
 
-  
+  const user = Cookies.get( 'userId' )
+  console.log('====================================');
+  console.log(user);
+  console.log('====================================');
+
 
   const [canteenName, setCanteenName] = useState("");
   const [location, setLoc] = useState("");
@@ -59,6 +64,7 @@ function CanteenRegistration() {
         setDishDesc("");
         setPrice("");
         navigation('/');
+        
         console.log("After navigation")
         
       })

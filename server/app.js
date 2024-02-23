@@ -2,8 +2,10 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose')
 const cors = require('cors');
+const cookie = require('cookie-parser')
 
 app.use(cors());
+app.use(cookie())
 app.use(express.json())
 const routes = require('./routes/routes');
 

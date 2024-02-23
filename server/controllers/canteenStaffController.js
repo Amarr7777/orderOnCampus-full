@@ -1,5 +1,43 @@
 const bcrypt = require('bcryptjs');
 const canteenStaff = require('../model/canteenStaffDetails');
+const jwt = require('jsonwebtoken');
+
+// exports.registerCanteenStaff = async (req, res) => {
+//     // Logic for canteen staff registration
+
+//     const { name, email, password } = req.body;
+//     const oldUser = await canteenStaff.findOne({ email: email });
+//     if (oldUser) {
+//         res.json('user already exists')
+//     } else {
+//         const encryptedPassword = await bcrypt.hash(password, 10);
+//         try {
+//             await canteenStaff.create({
+//                 name,
+//                 email,
+//                 password: encryptedPassword,
+//             });
+//             res.send({ status: 'ok', data: "canteen staff created" });
+//         } catch (error) {
+//             res.status(500).send({ status: 'error', data: error });
+//         }
+//     }
+// };
+
+// exports.setCookie = async(req,res) => {
+//     try {
+//         const email = req.params.email;
+//         const User = await canteenStaff.findOne({ email: email });
+//         if (!User) {
+//             return res.status(404).send("User not found");
+//         }
+//         console.log(User._id)
+//         res.cookie('userId', User._id, { httpOnly: true }).send("cookie set");
+//     } catch (error) {
+//         console.error("Error setting cookie:", error);
+//         res.status(500).send("Internal server error");
+//     }
+// };
 
 exports.registerCanteenStaff = async (req, res) => {
     // Logic for canteen staff registration
@@ -7,7 +45,7 @@ exports.registerCanteenStaff = async (req, res) => {
     const { name, email, password } = req.body;
     const oldUser = await canteenStaff.findOne({ email: email });
     if (oldUser) {
-        res.json('user already exists')
+        return res.json('user already exists');
     } else {
         const encryptedPassword = await bcrypt.hash(password, 10);
         try {
@@ -16,13 +54,14 @@ exports.registerCanteenStaff = async (req, res) => {
                 email,
                 password: encryptedPassword,
             });
+            // Create cookie here
+            res.cookie('userId', email, { httpOnly: true }).send('cookie done')
             res.send({ status: 'ok', data: "canteen staff created" });
         } catch (error) {
             res.status(500).send({ status: 'error', data: error });
         }
     }
 };
-
 exports.loginCanteenStaff = async (req, res) => {
     // Logic for canteen staff login
 

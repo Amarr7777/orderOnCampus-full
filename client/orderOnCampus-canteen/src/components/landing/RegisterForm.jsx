@@ -20,6 +20,7 @@ function RegisterForm({ regActive, setReginActive }) {
   const [passwordVerify, setPasswordVerify] = useState(false);
   const [cpassword, setCpassword] = useState("");
   const [cpasswordVerify, setCpasswordVerify] = useState(false);
+  const [userID, setUserID] = useState("");
 
   const handleName = (e) => {
     const value = e.target.value;
@@ -76,17 +77,38 @@ function RegisterForm({ regActive, setReginActive }) {
     axios
       .post("http://localhost:5001/registerCanteenStaff", data)
       .then((res) => {
-        setName("");
-        setEmail("");
-        setPassword("");
-        setCpassword("");
         if (res.data === "user already exists") {
           console.log("inside if ");
           alert("Email Already in use");
         } else {
+          console.log("inside else ");
           console.log("outside if ");
+          console.log("====================================");
+          setUserID(res.data.data._id);
+          console.log("====================================");
+          setName("");
+          setEmail("");
+          setPassword("");
+          setCpassword("");
+          // cookieFun();
           navigation("/registerCanteen");
         }
+      })
+      .catch((e) => {
+        console.log("error", e);
+      });
+  };
+
+  const cookieFun = async () => {
+    const data = {
+      name,
+      email,
+      password,
+    };
+    await axios
+      .get(`http://localhost:5001/set-cookie/${data.email}`)
+      .then((req, res) => {
+        console.log;
       })
       .catch((e) => {
         console.log("error", e);

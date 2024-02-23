@@ -5,7 +5,7 @@ const canteenStaffDetailsSchema = new mongoose.Schema({
     name: String,
     email: {type: String, unique: true},
     password: String,
-    // ownedCanteen: [{ type: Schema.Types.ObjectId, ref: 'allCanteen' }],
+    ownedCanteen: { type: Schema.Types.ObjectId, ref: 'allCanteen' },
 },{
     collection: "canteenStaffDetails"
 })

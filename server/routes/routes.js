@@ -9,7 +9,7 @@ router.post('/login', userController.loginUser);
 
 router.post('/registerCanteenStaff', canteenStaffController.registerCanteenStaff);
 router.post('/loginStaff', canteenStaffController.loginCanteenStaff);
-
 router.post('/registerCanteen', canteenController.registerCanteen);
 
+// router.get('/set-cookie/:email', canteenStaffController.setCookie);
 module.exports = router;
