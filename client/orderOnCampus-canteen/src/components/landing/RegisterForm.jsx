@@ -75,8 +75,9 @@ function RegisterForm({ regActive, setReginActive }) {
       password,
     };
     axios
-      .post("http://localhost:5001/registerCanteenStaff", data)
+      .post("http://localhost:5001/staff/register", data)
       .then((res) => {
+        console.log(res)
         if (res.data === "user already exists") {
           console.log("inside if ");
           alert("Email Already in use");
@@ -84,7 +85,7 @@ function RegisterForm({ regActive, setReginActive }) {
           console.log("inside else ");
           console.log("outside if ");
           console.log("====================================");
-          setUserID(res.data.data._id);
+          // setUserID(res.data.data._id);
           console.log("====================================");
           setName("");
           setEmail("");
@@ -99,21 +100,21 @@ function RegisterForm({ regActive, setReginActive }) {
       });
   };
 
-  const cookieFun = async () => {
-    const data = {
-      name,
-      email,
-      password,
-    };
-    await axios
-      .get(`http://localhost:5001/set-cookie/${data.email}`)
-      .then((req, res) => {
-        console.log;
-      })
-      .catch((e) => {
-        console.log("error", e);
-      });
-  };
+  // const cookieFun = async () => {
+  //   const data = {
+  //     name,
+  //     email,
+  //     password,
+  //   };
+  //   await axios
+  //     .get(`http://localhost:5001/set-cookie/${data.email}`)
+  //     .then((req, res) => {
+  //       console.log;
+  //     })
+  //     .catch((e) => {
+  //       console.log("error", e);
+  //     });
+  // };
 
   if (!regActive) {
     return null;

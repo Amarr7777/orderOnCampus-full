@@ -7,27 +7,51 @@ const Order = require('../model/order.model');
 // Register staff
 exports.registerStaff = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
+        const { name, email, password } = req.body;
+        
+        // Check if a staff member with the same email already exists
+        const existingStaff = await Staff.findOne({ email: email });
+        if (existingStaff) {
+            return  res.json('user already exists');
+        }
+    
+        // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
-        const staff = await Staff.create({ username, email, password: hashedPassword });
+    
+        // Create new staff member
+        const staff = await Staff.create({ username:name, email, password: hashedPassword });
+    
+        // Respond with success message
         res.status(201).json({ message: 'Staff member created successfully' });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(400).json({ error: error.message });
     }
+    
 };
 
 // Login staff
 exports.loginStaff = async (req, res) => {
+    const { email, password } = req.body;
     try {
-        const { email, password } = req.body;
-        const staff = await Staff.findOne({ email });
-        if (!staff || !await bcrypt.compare(password, staff.password)) {
-            throw new Error('Invalid email or password');
+        const user = await Staff.findOne({ email: email });
+        if (user) {
+            console.log("found")
+            bcrypt.compare(password, user.password, (err, result) => {
+                if (err) {
+                    res.status(500).json("An error occurred");
+                }
+                if (result) {
+                    res.json("Success");
+                } else {
+                    res.json("Incorrect password");
+                }
+            });
+        } else {
+            res.json("No user found");
         }
-        const token = jwt.sign({ id: staff._id }, 'your_secret_key');
-        res.status(200).json({ token });
     } catch (error) {
-        res.status(401).json({ message: error.message });
+        console.log(error);
+        res.status(500).send("An error occurred");
     }
 };
 

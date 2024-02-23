@@ -5,6 +5,7 @@ const CanteenController = require('../controllers/canteenController')
 const StaffController = require('../controllers/staffController')
 const UserController = require('../controllers/userController')
 
+
 // Register canteen
 router.post('/canteens', CanteenController.registerCanteen);
 // Get canteen menu

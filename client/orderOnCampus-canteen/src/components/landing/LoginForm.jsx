@@ -51,7 +51,7 @@ function LoginForm({ loginActive, setLoginActive }) {
         password,
       };
       axios
-        .post("http://localhost:5001/loginStaff", data)
+        .post("http://localhost:5001/staff/login", data)
         .then((res) => {
           setInvalidUser(false);
           setIncorrectPassword(false);
