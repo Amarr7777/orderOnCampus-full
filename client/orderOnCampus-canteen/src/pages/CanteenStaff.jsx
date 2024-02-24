@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import SideNavBar from "../components/sidebar/SideNavBar";
 import Header from "../components/header/Header";
 import OrderComponent from "../components/order/OrderComponent";
@@ -9,12 +9,16 @@ import ProfileComponent from "../components/profile/ProfileComponent";
 import axios from "axios";
 
 function CanteenStaff() {
+
+  const [userData, setUserData] = useState(null);
+
   axios.defaults.withCredentials = true;
   useEffect(() => {
     axios
       .get("http://localhost:5001/staff/auth")
       .then((res) => {
         console.log(res.data.userData);
+        setUserData(res.data.userData);
       })
       .catch((err) => console.log(err));
   }, []);

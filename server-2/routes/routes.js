@@ -20,6 +20,8 @@ router.post('/staff/register', StaffController.registerStaff);
 router.post('/staff/login', StaffController.loginStaff);
 //authentication
 router.get('/staff/auth',Auth.verifyToken,StaffController.authStaff)
+//logout
+router.get('/staff/logout', StaffController.logout);
 // Update menu item stock
 router.put('/menu/:dishId/stock', StaffController.updateMenuItemStock);
 // Add menu item

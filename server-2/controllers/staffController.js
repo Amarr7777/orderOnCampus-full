@@ -70,6 +70,9 @@ exports.authStaff = async(req,res) => {
     res.json({ userData });
 }
 
+exports.logout =async(req,res) => {
+    res.clearCookie('token').send('Token cookie cleared successfully');
+}
 
 
 exports.updateMenuItemStock = async (req, res) => {

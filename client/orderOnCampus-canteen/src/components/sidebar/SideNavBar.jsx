@@ -4,8 +4,17 @@ import signoutIcon from "../../assets/sign-out.svg";
 import userIcon from "../../assets/user.svg";
 import menuIcon from "../../assets/menu.svg";
 import chartIcon from "../../assets/metrics.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios'
 function SideNavBar() {
+
+  const navigate = useNavigate()
+  const logOut = ()=>{
+    localStorage.removeItem("token");
+    axios.get("http://localhost:5001/staff/logout").then((res)=>{
+      navigate("/")
+    });
+  }
   return (
     <div className="flex h-screen max-w-16 min-w-16 flex-col justify-between border-e bg-white  ">
       <div>
@@ -66,7 +75,7 @@ function SideNavBar() {
       </div>
 
       <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-white p-2">
-        <form action="/">
+        <form action="/" onSubmit={logOut}>
           <button
             type="submit"
             className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
