@@ -3,8 +3,10 @@ const mongoose = require('mongoose');
 const canteenSchema = new mongoose.Schema({
     name: { type: String, required: true },
     location: { type: String, required: true },
-    openStatus: Boolean,
-    menu: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MenuItem' }],
+    canteenDescription: String,
+    category: { type: String, required: true },
+    openStatus: {type:Boolean,default:true},
+    menu: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MenuItem' , required: false}],
     // staff: { type: mongoose.Schema.Types.ObjectId, ref: 'Staff', required: true } // Reference to staff member who manages the canteen
 });
 

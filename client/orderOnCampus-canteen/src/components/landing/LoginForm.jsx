@@ -10,7 +10,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+  axios.defaults.withCredentials=true;
 function LoginForm({ loginActive, setLoginActive }) {
+  axios.defaults.withCredentials=true;
+  
   const [email, setEmail] = useState("");
   const [emailVerify, setEmailVerify] = useState(false);
   const [password, setPassword] = useState("");

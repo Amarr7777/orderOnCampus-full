@@ -11,7 +11,7 @@ router.post('/canteens', CanteenController.registerCanteen);
 // Get canteen menu
 router.get('/canteens/:canteenId/menu', CanteenController.getCanteenMenu);
 
-
+ 
 
 // Register staff
 router.post('/staff/register', StaffController.registerStaff);

@@ -3,8 +3,8 @@ const Canteen = require('../model/canteen.model');
 // Register canteen
 exports.registerCanteen = async (req, res) => {
     try {
-        const { name, location, openingHours, staffId } = req.body;
-        const canteen = await Canteen.create({ name, location, openingHours, staff: staffId });
+        const { canteenName, location, canteenDescription, category, openingHours, menu } = req.body;
+        const canteen = await Canteen.create({ name:canteenName, location, canteenDescription, category, openingHours, menu});
         res.status(201).json({ message: 'Canteen created successfully' });
     } catch (error) {
         res.status(400).json({ message: error.message });

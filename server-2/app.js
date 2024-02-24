@@ -2,13 +2,18 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose')
 const cors = require('cors');
-// const cookie = require('cookie-parser')
+const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser');
 
 
-app.use(cors());
-// app.use(cookie())
+
 app.use(express.json())
+app.use(cookieParser())
+app.use(cors({
+    origin: ["http://localhost:5173"],
+    methods: ["GET","POST"],
+    credentials: true
+}));
 app.use(bodyParser.json());
 
 const routes = require('./routes/routes');

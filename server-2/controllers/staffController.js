@@ -4,29 +4,34 @@ const Staff = require('../model/staff.model')
 const MenuItem = require('../model/menuItem.model')
 const Canteen = require('../model/canteen.model')
 const Order = require('../model/order.model');
+
+
+
+
 // Register staff
 exports.registerStaff = async (req, res) => {
     try {
         const { name, email, password } = req.body;
-        
+
         // Check if a staff member with the same email already exists
         const existingStaff = await Staff.findOne({ email: email });
         if (existingStaff) {
-            return  res.json('user already exists');
+            return res.json('user already exists');
         }
-    
+
         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
-    
+
         // Create new staff member
-        const staff = await Staff.create({ username:name, email, password: hashedPassword });
-    
+        const staff = await Staff.create({ username: name, email, password: hashedPassword });
+        
+
         // Respond with success message
         res.status(201).json({ message: 'Staff member created successfully' });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
-    
+
 };
 
 // Login staff
@@ -41,6 +46,8 @@ exports.loginStaff = async (req, res) => {
                     res.status(500).json("An error occurred");
                 }
                 if (result) {
+                    const token = jwt.sign({ userId: Staff._id }, "keyy", { expiresIn: '24h' });
+                    res.cookie("token", token)
                     res.json("Success");
                 } else {
                     res.json("Incorrect password");
@@ -77,10 +84,15 @@ exports.addMenuItem = async (req, res) => {
     const { name, price, description, available } = req.body;
 
     try {
+        const canteenId = '65d8a8e352d87f8fc2eaa565'
         const newMenuItem = new MenuItem({ name, price, description, available });
         await newMenuItem.save();
-
+        console.log(newMenuItem._id)
+        const canteen = await Canteen.findById(canteenId);
+        canteen.menu.push(newMenuItem._id);
+        await canteen.save();
         return res.status(201).json({ message: "Menu item added successfully", newMenuItem });
+
     } catch (error) {
         console.error("Error adding menu item:", error);
         return res.status(500).json({ message: "Internal server error" });
