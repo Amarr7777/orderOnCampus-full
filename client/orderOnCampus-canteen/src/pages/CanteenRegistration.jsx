@@ -7,6 +7,15 @@ import { useNavigate } from "react-router-dom";
 function CanteenRegistration() {
   const navigation = useNavigate();
 
+  axios.defaults.withCredentials = true;
+  useEffect(() => {
+    axios
+      .get("http://localhost:5001/staff/auth")
+      .then((res) => {
+        console.log("front",res.data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
 
   const [canteenName, setCanteenName] = useState("");

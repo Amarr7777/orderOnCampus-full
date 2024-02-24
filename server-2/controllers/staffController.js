@@ -4,7 +4,7 @@ const Staff = require('../model/staff.model')
 const MenuItem = require('../model/menuItem.model')
 const Canteen = require('../model/canteen.model')
 const Order = require('../model/order.model');
-
+const secretKey = 'your_secret_key';
 
 
 
@@ -24,7 +24,8 @@ exports.registerStaff = async (req, res) => {
 
         // Create new staff member
         const staff = await Staff.create({ username: name, email, password: hashedPassword });
-        
+        const token = jwt.sign({ _id: existingStaff._id }, secretKey, { expiresIn: '24h' });
+        res.cookie("token", token)
 
         // Respond with success message
         res.status(201).json({ message: 'Staff member created successfully' });
@@ -46,7 +47,7 @@ exports.loginStaff = async (req, res) => {
                     res.status(500).json("An error occurred");
                 }
                 if (result) {
-                    const token = jwt.sign({ userId: Staff._id }, "keyy", { expiresIn: '24h' });
+                    const token = jwt.sign({ _id: user._id }, secretKey, { expiresIn: '24h' });
                     res.cookie("token", token)
                     res.json("Success");
                 } else {
@@ -61,6 +62,15 @@ exports.loginStaff = async (req, res) => {
         res.status(500).send("An error occurred");
     }
 };
+
+//authentication
+exports.authStaff = async(req,res) => {
+    // console.log(res.data)
+    const userData = res.locals.user;
+    res.json({ userData });
+}
+
+
 
 exports.updateMenuItemStock = async (req, res) => {
     const { dishId } = req.params;

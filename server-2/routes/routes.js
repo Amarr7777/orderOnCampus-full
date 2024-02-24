@@ -4,6 +4,7 @@ const router = express.Router();
 const CanteenController = require('../controllers/canteenController')
 const StaffController = require('../controllers/staffController')
 const UserController = require('../controllers/userController')
+const Auth = require('../middleware/auth')
 
 
 // Register canteen
@@ -17,6 +18,8 @@ router.get('/canteens/:canteenId/menu', CanteenController.getCanteenMenu);
 router.post('/staff/register', StaffController.registerStaff);
 // Login staff
 router.post('/staff/login', StaffController.loginStaff);
+//authentication
+router.get('/staff/auth',Auth.verifyToken,StaffController.authStaff)
 // Update menu item stock
 router.put('/menu/:dishId/stock', StaffController.updateMenuItemStock);
 // Add menu item
