@@ -1,13 +1,35 @@
 import { View, Text, SafeAreaView, TouchableOpacity, Image, TouchableNativeFeedback, TouchableWithoutFeedback, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { heightPercentageToDP as hp, widthPercentageToDP, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native';
 import * as Icon from "react-native-feather";
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios';
 
 export default function UserScreen() {
-
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
   const navigation = useNavigation();
+  const getData = async () => {
+    const token = await AsyncStorage.getItem("token")
+    console.log("this", token);
+    axios.post("http://0.0.0.0:5001/users/get-user", { token }).then((res) => {
+      // console.log(res.data.data.name)
+      setName(res.data.data.name)
+      setEmail(res.data.data.email)
+    }).catch((err) => console.error(err))
+  }
+  useEffect(() => {
+    getData();
+  }, [])
+
+  const handleLogout = () => {
+    AsyncStorage.setItem('isLoggedIn','')
+    AsyncStorage.setItem('token','')
+    navigation.navigate('Login')
+  }
+  
+
   return (
     <SafeAreaView className='flex-1 mx-10'>
       <ScrollView
@@ -31,8 +53,8 @@ export default function UserScreen() {
               style={{ width: hp('10%'), height: hp('10%') }}
             />
             <View>
-              <Text className="font-semi text-lg px-2 ">User 1</Text>
-              <Text className="font-semi text-sm px-2 ">+91 9074205926</Text>
+              <Text className="font-semi text-lg px-2 ">{name}</Text>
+              <Text className="font-semi text-sm px-2 ">{email}</Text>
             </View>
           </View>
         </View>
@@ -115,7 +137,7 @@ export default function UserScreen() {
         <View className='px-5 py-2'>
           <TouchableOpacity className="flex-row items-center justify-center bg-green-900  p-5 shadow rounded-lg"
             style={{ width: wp('70%') }}
-            onPress={() => navigation.navigate('Login')}
+            onPress={handleLogout}
           >
             <View>
               <Text className="font-semi text-lg px-2 ">Log Out</Text>

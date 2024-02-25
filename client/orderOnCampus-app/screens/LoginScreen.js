@@ -47,6 +47,7 @@ export default function LoginScreen() {
                 // console.log(res.data.data);
                 if (res.data.status === "ok") {
                     AsyncStorage.setItem("token",res.data.data)
+                    AsyncStorage.setItem('isLoggedIn', JSON.stringify(true));
                     navigation.navigate("Tab");
                 } else if (res.data === "Incorrect password") {
                     setIncorrectPassword(true)

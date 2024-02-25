@@ -16,16 +16,55 @@ import CartIcon from '../components/CartIcon';
 import PaymentScreen from '../screens/PaymentScreen';
 import FoodPrepScreen from '../screens/FoodPrepScreen';
 import RegisterScreen from '../screens/RegisterScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 export default function navigation() {
-  return (
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const getData = async () => {
+    const data = await AsyncStorage.getItem('isLoggedIn');
+    setIsLoggedIn(data)
+  }
+  useEffect(() => { getData() }, [])
 
+  const TabNav = () => {
+    const Stack = createNativeStackNavigator();
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Tab" component={TabNavigation} />
+        <Stack.Screen name="Offers" component={OfferScreen} />
+        <Stack.Screen name="Canteen" component={CanteenScreen} />
+        <Stack.Screen name="Cart" options={{ presentation: 'modal' }} component={CartScreen} />
+        <Stack.Screen name="Payment" options={{ presentation: 'fullScreenModal' }} component={PaymentScreen} />
+        <Stack.Screen name="FoodPrep" options={{ presentation: 'fullScreenModal' }} component={FoodPrepScreen} />
+      </Stack.Navigator>
+    );
+  };
+
+  const LogInNav = () => {
+    const Stack = createNativeStackNavigator();
+    return (
+
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="Tab" component={TabNavigation} />
+        <Stack.Screen name="Offers" component={OfferScreen} />
+        <Stack.Screen name="Canteen" component={CanteenScreen} />
+        <Stack.Screen name="Cart" options={{ presentation: 'modal' }} component={CartScreen} />
+        <Stack.Screen name="Payment" options={{ presentation: 'fullScreenModal' }} component={PaymentScreen} />
+        <Stack.Screen name="FoodPrep" options={{ presentation: 'fullScreenModal' }} component={FoodPrepScreen} />
+      </Stack.Navigator>
+    );
+  };
+
+  return (
+    // <NavigationContainer>
+    //   {isLoggedIn ? <TabNav/> : <LogInNav/>}
+    // </NavigationContainer>
     <NavigationContainer>
-      <Stack.Navigator screenOptions={
-        {
-          headerShown: false
-        }
-      }>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Tab" component={TabNavigation} />
@@ -36,6 +75,5 @@ export default function navigation() {
         <Stack.Screen name="FoodPrep" options={{ presentation: 'fullScreenModal' }} component={FoodPrepScreen} />
       </Stack.Navigator>
     </NavigationContainer>
-
-  )
+  );
 }
