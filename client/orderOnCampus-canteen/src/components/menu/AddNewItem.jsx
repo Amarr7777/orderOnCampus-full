@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
+import axios from 'axios'
 
 function AddNewItem({ addNewForm, setAddNewForm }) {
   const [formData, setFormData] = useState({
@@ -8,7 +9,7 @@ function AddNewItem({ addNewForm, setAddNewForm }) {
     category: "",
     description: "",
     price: "",
-    image: "",
+    // image: "",
   });
 
   const handleChange = (e) => {
@@ -22,6 +23,8 @@ function AddNewItem({ addNewForm, setAddNewForm }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
+    const data  = {...formData};
+
   };
   if (!addNewForm) {
     return null;

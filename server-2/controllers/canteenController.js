@@ -1,10 +1,30 @@
 const Canteen = require('../model/canteen.model');
-
-// Register canteen
+const Staff = require('../model/staff.model');
+const jwt = require('jsonwebtoken');
+const secretKey = 'your_secret_key';
+// Register canteen 
 exports.registerCanteen = async (req, res) => {
     try {
         const { canteenName, location, canteenDescription, category, openingHours, menu } = req.body;
-        const canteen = await Canteen.create({ name:canteenName, location, canteenDescription, category, openingHours, menu});
+        const canteen = await Canteen.create({ name: canteenName, location, canteenDescription, category, openingHours, menu });
+        const createdCanteenId = canteen._id;
+        console.log("created ID", createdCanteenId);
+
+        const token = req.cookies.token // Get the JWT token from the request cookies
+       console.log(token)
+        if (!token) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+        const user = jwt.verify(token, secretKey)
+        const loggedUser = Staff.findOne({ _id: user._id }).then(async (userData) => {
+            const staffId = userData._id;
+            console.log("Staff Id is ", staffId)
+            const updatedStaff =  await Staff.findByIdAndUpdate(
+                staffId,
+                { $push: { ownedCanteens: createdCanteenId } },
+                { new: true }
+            );
+        })
         res.status(201).json({ message: 'Canteen created successfully' });
     } catch (error) {
         res.status(400).json({ message: error.message });

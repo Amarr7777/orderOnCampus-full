@@ -5,16 +5,16 @@ import userIcon from "../../assets/user.svg";
 import menuIcon from "../../assets/menu.svg";
 import chartIcon from "../../assets/metrics.svg";
 import { Link, useNavigate } from "react-router-dom";
-import axios from 'axios'
+import axios from "axios";
 function SideNavBar() {
-
-  const navigate = useNavigate()
-  const logOut = ()=>{
+  const navigate = useNavigate();
+  const logOut = () => {
     localStorage.removeItem("token");
-    axios.get("http://localhost:5001/staff/logout").then((res)=>{
-      navigate("/")
+    axios.get("http://localhost:5001/staff/logout").then((res) => {
+      navigate("/");
+      window.location.reload();
     });
-  }
+  };
   return (
     <div className="flex h-screen max-w-16 min-w-16 flex-col justify-between border-e bg-white  ">
       <div>

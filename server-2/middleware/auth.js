@@ -5,7 +5,9 @@ const secretKey = 'your_secret_key';
 exports.verifyToken = (req, res, next) => {
     const token = req.cookies.token;
     console.log(token)
-    if (!token) return res.status(401).send('Unauthorized');
+    if (!token) {
+        return res.status(401).send('Unauthorized')
+    };
 
     const user = jwt.verify(token, secretKey)
     const loggedUser = Staff.findOne({ _id: user._id }).then((userData) => {

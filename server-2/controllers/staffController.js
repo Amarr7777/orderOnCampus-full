@@ -8,7 +8,7 @@ const secretKey = 'your_secret_key';
 
 
 
-// Register staff
+// Register staff 
 exports.registerStaff = async (req, res) => {
     try {
         const { name, email, password } = req.body;
@@ -24,7 +24,7 @@ exports.registerStaff = async (req, res) => {
 
         // Create new staff member
         const staff = await Staff.create({ username: name, email, password: hashedPassword });
-        const token = jwt.sign({ _id: existingStaff._id }, secretKey, { expiresIn: '24h' });
+        const token = jwt.sign({ _id: staff._id }, secretKey, { expiresIn: '24h' });
         res.cookie("token", token)
 
         // Respond with success message
@@ -93,7 +93,7 @@ exports.updateMenuItemStock = async (req, res) => {
     }
 };
 
-exports.addMenuItem = async (req, res) => {
+exports.addMenuItem = async (req, res) => { 
     const { name, price, description, available } = req.body;
 
     try {

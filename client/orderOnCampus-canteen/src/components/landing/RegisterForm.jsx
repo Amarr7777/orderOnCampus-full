@@ -70,7 +70,7 @@ function RegisterForm({ regActive, setReginActive }) {
       return;
     }
     const data = {
-      name,
+      name:name,
       email,
       password,
     };
@@ -126,7 +126,7 @@ function RegisterForm({ regActive, setReginActive }) {
           <h4 className="text-gray-500 text-2xl ">Register</h4>
           <FontAwesomeIcon
             icon={faXmark}
-            onClick={() => setReginActive(false)}
+            onClick={() => {setReginActive(false);window.location.reload();}}
             className="h-5"
             color="gray"
           />
