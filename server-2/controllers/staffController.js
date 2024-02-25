@@ -97,13 +97,22 @@ exports.addMenuItem = async (req, res) => {
     const { name, price, description, available } = req.body;
 
     try {
-        const canteenId = '65d8a8e352d87f8fc2eaa565'
         const newMenuItem = new MenuItem({ name, price, description, available });
         await newMenuItem.save();
         console.log(newMenuItem._id)
-        const canteen = await Canteen.findById(canteenId);
-        canteen.menu.push(newMenuItem._id);
-        await canteen.save();
+        const token = req.cookies.token;
+        console.log(token)
+        if (!token) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+        const user = jwt.verify(token, secretKey)
+        const loggedUser = Staff.findOne({ _id: user._id }).then(async (userData) => {
+            const canteenId = userData.ownedCanteens;
+            console.log("Staff Id is ", canteenId)
+            const canteen = await Canteen.findById(canteenId);
+            canteen.menu.push(newMenuItem._id);
+            await canteen.save();
+        })
         return res.status(201).json({ message: "Menu item added successfully", newMenuItem });
 
     } catch (error) {

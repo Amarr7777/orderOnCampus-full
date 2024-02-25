@@ -26,7 +26,7 @@ function EditItemForm({ editForm, setEditForm }) {
   if (!editForm) return null;
   return (
     <div className="fixed w-full inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center content-center z-50">
-      <div className="max-w-md mx-auto p-6 bg-gray-100 shadow-md rounded-md">
+      <div className="lg:w-1/2 mx-auto p-6 bg-gray-100 shadow-md rounded-md">
         <div className="flex items-center justify-between mb-10">
           <h4 className="text-gray-500 text-2xl ">Edit Dish</h4>
           <FontAwesomeIcon
@@ -50,19 +50,7 @@ function EditItemForm({ editForm, setEditForm }) {
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-green-900"
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="name" className="block font-medium mb-1">
-              Category
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.category}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-green-900"
-            />
-          </div>
+          
           <div className="mb-4">
             <label htmlFor="description" className="block font-medium mb-1">
               Description
