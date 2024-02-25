@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { heightPercentageToDP, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
 import axios from 'axios';
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 export default function LoginScreen() {
     const navigation = useNavigation();
     const [showPassword, setShowPassword] = useState(false);
@@ -41,10 +41,12 @@ export default function LoginScreen() {
                 email,
                 password,
             }
-            axios.post("http://0.0.0.0:5001/login", userData).then((res) => {
+            axios.post("http://0.0.0.0:5001/users/login", userData).then((res) => {
                 setInvalidUser(false);
                 setIncorrectPassword(false);
-                if (res.data === "Success") {
+                // console.log(res.data.data);
+                if (res.data.status === "ok") {
+                    AsyncStorage.setItem("token",res.data.data)
                     navigation.navigate("Tab");
                 } else if (res.data === "Incorrect password") {
                     setIncorrectPassword(true)
@@ -56,8 +58,8 @@ export default function LoginScreen() {
                     // alert("No user found with this email id");
                 } else {
                     alert("An error occurred. Please try again later.");
-                    setEmail("")
-                    setPassword("")
+                    // setEmail("")
+                    // setPassword("")
                 }
             }).catch((err) => {
                 console.log(err);
@@ -76,16 +78,16 @@ export default function LoginScreen() {
                     source={require('../assets/logIn.png')} />
             </View>
             <View className='flex gap-2'>
-                <View 
-                style={{ minWidth: wp('80%'), maxWidth: wp('80%') }}
-                className={`flex flex-row justify-between items-center px-2 rounded-md border ${!invalidUser ? 'border-green-900' : 'border-red-600'}`}>    
-                <TextInput placeholder='Email or phone'
-                    keyboardType="email-address"
-                    onChangeText={(e) => handleEmail(e)}
-                    className=" py-5 pr-20 rounded-md text-left"
-                     />
+                <View
+                    style={{ minWidth: wp('80%'), maxWidth: wp('80%') }}
+                    className={`flex flex-row justify-between items-center px-2 rounded-md border ${!invalidUser ? 'border-green-900' : 'border-red-600'}`}>
+                    <TextInput placeholder='Email or phone'
+                        keyboardType="email-address"
+                        onChangeText={(e) => handleEmail(e)}
+                        className=" py-5 pr-20 rounded-md text-left"
+                    />
                 </View>
-                {!invalidUser ? null :(
+                {!invalidUser ? null : (
                     <View style={{ minWidth: wp('80%'), maxWidth: wp('80%') }}>
                         <Text className="font-light text-sm text-red-700">
                             User not found, please register instead.
@@ -93,15 +95,15 @@ export default function LoginScreen() {
                     </View>
 
                 )}
-                 <View 
-                style={{ minWidth: wp('80%'), maxWidth: wp('80%') }}
-                className={`flex flex-row justify-between items-center px-2 rounded-md border ${!incorrectPassword ? 'border-green-900' : 'border-red-600'}`}>
-                <TextInput placeholder='password'
-                    secureTextEntry={!showPassword}
-                    onChangeText={(e) => handlePassword(e)}
-                    className="py-5 pr-20 rounded-md text-left"/>
+                <View
+                    style={{ minWidth: wp('80%'), maxWidth: wp('80%') }}
+                    className={`flex flex-row justify-between items-center px-2 rounded-md border ${!incorrectPassword ? 'border-green-900' : 'border-red-600'}`}>
+                    <TextInput placeholder='password'
+                        secureTextEntry={!showPassword}
+                        onChangeText={(e) => handlePassword(e)}
+                        className="py-5 pr-20 rounded-md text-left" />
                 </View>
-                {!incorrectPassword ? null :(
+                {!incorrectPassword ? null : (
                     <View style={{ minWidth: wp('80%'), maxWidth: wp('80%') }}>
                         <Text className="font-light text-sm text-red-700">
                             incorrect password

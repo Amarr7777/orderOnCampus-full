@@ -17,7 +17,7 @@ router.get('/canteens/:canteenId/menu', CanteenController.getCanteenMenu);
 // Register staff
 router.post('/staff/register', StaffController.registerStaff);
 // Login staff
-router.post('/staff/login', StaffController.loginStaff);
+router.post('/staff/login', StaffController.loginStaff); 
 //authentication
 router.get('/staff/auth',Auth.verifyToken,StaffController.authStaff)
 //staff logout
@@ -26,6 +26,8 @@ router.get('/staff/logout', StaffController.logout);
 router.put('/menu/:dishId/stock', StaffController.updateMenuItemStock);
 // Add menu item
 router.post('/menu/add', StaffController.addMenuItem);
+// Edit a menu item
+router.put('/menu/:menuItemId', StaffController.editMenuItem);
 // Set canteen open status
 router.put('/canteen/open', StaffController.setCanteenOpenStatus);
 // Get canteen orders
@@ -38,6 +40,8 @@ router.put('/orders/:orderId/status', StaffController.updateOrderStatus);
 router.post('/users/register', UserController.registerUser);
 // Login user
 router.post('/users/login', UserController.loginUser);
+//Get user
+router.post('/users/get-user', UserController.getUser);
 // Get user favorites
 router.get('/users/favorites', UserController.getFavorites);
 // Get user orders

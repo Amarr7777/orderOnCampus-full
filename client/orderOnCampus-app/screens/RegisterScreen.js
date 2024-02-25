@@ -68,7 +68,6 @@ export default function RegisterScreen() {
         if (!nameVerify || !emailVerify || !passwordVerify || !cpasswordVerify) {
             alert("fill all the mandatory Fields");
         } else {
-            console.log("inside app")
             setUser(false)
             const userData = {
                 name: name,
@@ -76,7 +75,7 @@ export default function RegisterScreen() {
                 phone,
                 password,
             }
-            axios.post("http://0.0.0.0:5001/register", userData).then((res) => {
+            axios.post("http://0.0.0.0:5001/users/register", userData).then((res) => {
 
                 if (res.data === "exists") {
                     console.log("inside if ")

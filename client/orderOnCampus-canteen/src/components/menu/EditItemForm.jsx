@@ -1,27 +1,60 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
-
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import axios from "axios";
 function EditItemForm({ editForm, setEditForm }) {
-  const [formData, setFormData] = useState({
-    name: "",
-    category: "",
-    description: "",
-    price: "",
-    image: "",
-  });
+  const [name, setName] = useState("");
+  const [category, setCategory] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [avialable, setAvialable] = useState(true);
+  const [nameVerify, setNameVerify] = useState(false);
+  const [priceVerify, setPriceVerify] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  const handleName = (e) => {
+    const nameVar = e.target.value;
+    setName(nameVar);
+    setNameVerify(false);
+    const regex = /^[a-zA-Z\s]{3,}$/;
+    if (regex.test(nameVar)) {
+      setNameVerify(true);
+    }
+  };
+
+  const handlePrice = (e) => {
+    const priceVar = Number(e.target.value);
+    setPrice(priceVar);
+    setPriceVerify(false);
+    const regex = /^\d+(\.\d+)?$/;
+    if (priceVar > 0) {
+      setPriceVerify(true);
+    }
   };
 
   const handleSubmit = (e) => {
+    if (!nameVerify || !priceVerify || !avialable) {
+      alert("Fill all the mandatory fields");
+    }
     e.preventDefault();
-    console.log(formData);
+    const data = {
+      name,
+      description,
+      price,
+      avialable,
+    };
+    axios
+      .post("http://localhost:5001/menu/add", data)
+      .then(() => {
+        alert("Successfully edited the item!");
+        setEditForm(false);
+        setNameVerify(false);
+        setPriceVerify(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Failed to add new item");
+      });
   };
   if (!editForm) return null;
   return (
@@ -31,7 +64,11 @@ function EditItemForm({ editForm, setEditForm }) {
           <h4 className="text-gray-500 text-2xl ">Edit Dish</h4>
           <FontAwesomeIcon
             icon={faXmark}
-            onClick={() => setEditForm(false)}
+            onClick={() => {
+              setEditForm(false);
+              setNameVerify(false);
+              setPriceVerify(false);
+            }}
             className="h-5"
             color="gray"
           />
@@ -41,16 +78,21 @@ function EditItemForm({ editForm, setEditForm }) {
             <label htmlFor="name" className="block font-medium mb-1">
               Name
             </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-green-900"
-            />
+            <div className="flex items-center border w-full bg-white  rounded-md">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                onChange={handleName}
+                className="w-full px-3 py-2  rounded-md focus:outline-none "
+              />
+              {name.length < 1 ? null : nameVerify ? (
+                <FaCheckCircle className="m-2 text-green-900" />
+              ) : (
+                <FaTimesCircle className="m-2 text-red-700 " />
+              )}
+            </div>
           </div>
-          
           <div className="mb-4">
             <label htmlFor="description" className="block font-medium mb-1">
               Description
@@ -58,8 +100,7 @@ function EditItemForm({ editForm, setEditForm }) {
             <textarea
               id="description"
               name="description"
-              value={formData.description}
-              onChange={handleChange}
+              onChange={(e) => setDescription(e.target.value)}
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-green-900"
               rows="3"
             ></textarea>
@@ -68,14 +109,20 @@ function EditItemForm({ editForm, setEditForm }) {
             <label htmlFor="price" className="block font-medium mb-1">
               Price
             </label>
-            <input
-              type="number"
-              id="price"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-green-900"
-            />
+            <div className="flex items-center border w-full  bg-white rounded-md">
+              <input
+                type="number"
+                id="price"
+                name="price"
+                onChange={handlePrice}
+                className="w-full px-3 py-2  rounded-md focus:outline-none "
+              />
+              {price.length < 1 ? null : priceVerify ? (
+                <FaCheckCircle className="m-2 text-green-900" />
+              ) : (
+                <FaTimesCircle className="m-2 text-red-700 " />
+              )}
+            </div>
           </div>
           <div className="mb-4">
             <label htmlFor="image" className="block font-medium mb-1">
@@ -85,8 +132,6 @@ function EditItemForm({ editForm, setEditForm }) {
               type="text"
               id="image"
               name="image"
-              value={formData.image}
-              onChange={handleChange}
               className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-green-900"
             />
           </div>
