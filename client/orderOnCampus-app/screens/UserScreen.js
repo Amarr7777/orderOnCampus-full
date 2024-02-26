@@ -5,30 +5,28 @@ import { useNavigation } from '@react-navigation/native';
 import * as Icon from "react-native-feather";
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectToken, setToken } from '../slices/AuthSlice';
 
 export default function UserScreen() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const navigation = useNavigation();
-  const getData = async () => {
-    const token = await AsyncStorage.getItem("token")
-    console.log("this", token);
-    axios.post("http://0.0.0.0:5001/users/get-user", { token }).then((res) => {
-      // console.log(res.data.data.name)
-      setName(res.data.data.name)
-      setEmail(res.data.data.email)
-    }).catch((err) => console.error(err))
-  }
+  const token = useSelector(selectToken);
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    getData();
+    setName(token.data.name)
+    setEmail(token.data.email)
   }, [])
 
   const handleLogout = () => {
-    AsyncStorage.setItem('isLoggedIn','')
-    AsyncStorage.setItem('token','')
+    AsyncStorage.setItem('isLoggedIn', '')
+    AsyncStorage.setItem('token', '')
     navigation.navigate('Login')
+    dispatch(setToken({}))
   }
-  
+
 
   return (
     <SafeAreaView className='flex-1 mx-10'>

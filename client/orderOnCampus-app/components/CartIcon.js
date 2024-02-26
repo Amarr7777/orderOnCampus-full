@@ -13,7 +13,7 @@ export default function CartIcon() {
   if (!cartItems.length) return null;
   return (
     <View className="absolute z-50 w-full"
-      style={{ bottom: hp('10%') }}>
+      style={{ bottom: hp('0%') }}>
       <TouchableOpacity
         onPress={() => navigation.navigate('Cart')}
         className=" flex-row flex-1 items-center justify-between bg-green-950 p-5 rounded-full mx-5 shadow-lg"

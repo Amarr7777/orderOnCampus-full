@@ -20,10 +20,10 @@ export default function CartScreen() {
 
     useEffect(() => {
         const items = cartItems.reduce((group, item) => {
-            if (group[item.id]) {
-                group[item.id].push(item);
+            if (group[item._id]) {
+                group[item._id].push(item);
             } else {
-                group[item.id] = [item];
+                group[item._id] = [item];
             }
             return group;
         }, {})
@@ -77,7 +77,7 @@ export default function CartScreen() {
                                         <Text className="text-lg  px-2">$ {dish.price}</Text>
                                         <TouchableOpacity
                                             className="bg-green-900 rounded-full p-1 z-10"
-                                            onPress={() => dispatch(removeFromCart({ id: dish.id }))}
+                                            onPress={() => dispatch(removeFromCart({ _id: dish._id }))}
                                         >
                                             <Icon.Minus height='20' width='20' stroke='white' />
                                         </TouchableOpacity>

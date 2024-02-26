@@ -40,16 +40,3 @@ exports.getAllCanteens = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
       }
 }
-exports.getCanteenMenu = async (req, res) => {
-    try {
-        const canteenId = req.params.canteenId;
-        const canteen = await Canteen.findById(canteenId).populate('menu');
-        if (!canteen) {
-            return res.status(404).json({ message: "Canteen not found" });
-        }
-        res.json(canteen.menu);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-};

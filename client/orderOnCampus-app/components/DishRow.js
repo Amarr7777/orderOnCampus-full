@@ -8,12 +8,12 @@ import { addToCart, removeFromCart, selectCartItems } from '../slices/CartSlice'
 export default function DishRow({ item }) {
   const dispatch = useDispatch()
   const cartItems = useSelector(selectCartItems);
-  const totalItems = cartItems.filter(cartItem => cartItem.id === item.id);
+  const totalItems = cartItems.filter(cartItem => cartItem._id === item._id);
   const handleIncrease = () => {
     dispatch(addToCart({ ...item }))
   }
   const handleDecrease = () => {
-    dispatch(removeFromCart({ id: item.id }))
+    dispatch(removeFromCart({ _id: item._id }))
   }
   return (
     <View className="flex-row items-center p-5 shadow bg-white rounded-lg mb-5 mt-2 ">

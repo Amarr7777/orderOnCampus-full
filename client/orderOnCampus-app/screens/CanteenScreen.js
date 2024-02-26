@@ -8,7 +8,6 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCanteen, setCanteen } from '../slices/canteenSlice';
 import CartIcon from '../components/CartIcon';
-import axios from 'axios';
 export default function CanteenScreen() {
   const navigation = useNavigation()
   const { params } = useRoute();
@@ -18,18 +17,14 @@ export default function CanteenScreen() {
   const canteen = useSelector(selectCanteen);
   const dispatch = useDispatch()
   console.log(item.menu)
-  // const getMenu = async()=>{
-  //   axios.get(`http://0.0.0.0:5001/canteens/${item._id}/menu`).then((res)=>{
-  //     setMenuItems(res.data)
-  //   }).catch((err) =>console.log(err))
-  // }
 
   useEffect(() => {
-    if (item && item.id) {
+    if (item && item._id) {
       dispatch(setCanteen({ ...item }))
       setMenuItems(item.menu)
     }
   }, [])
+  console.log("MENU ITEM",menuItems)
   let checkFav = item.favorite
   const [favorites, setFavorties] = useState(checkFav);
 
@@ -65,7 +60,7 @@ export default function CanteenScreen() {
           <View className="py-10 px-5 bg-white">
             <Text className="font-bold text-3xl">Menu</Text>
             {
-              item.menu.map((dish, index) => <DishRow item={{ ...dish }} key={index} />)
+              menuItems.map((dish, index) => <DishRow item={{ ...dish }} key={index} />)
             }
           </View>
         </View>

@@ -6,10 +6,13 @@ import Categories from '../components/Categories';
 import * as Icon from "react-native-feather";
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
+import { setToken } from '../slices/AuthSlice';
+import { useDispatch } from 'react-redux';
 
 
 
 export default function HomeScreen() {
+    const dispatch = useDispatch()
     const[name,setName] = useState("")
     const getData = async()=>{
         const token = await AsyncStorage.getItem("token")
@@ -17,6 +20,8 @@ export default function HomeScreen() {
         axios.post("http://0.0.0.0:5001/users/get-user",{token}).then((res) => {
             console.log(res.data)
             setName(res.data.data.name)
+            // dispatch(setToken({ name: res.data.data.name, email: res.data.data.email, _id: res.data.data._id }));
+            dispatch(setToken({ data: res.data.data }));
         }).catch((err) => console.error(err))
     }
     const navigation = useNavigation();
