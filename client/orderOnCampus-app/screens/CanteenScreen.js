@@ -23,7 +23,10 @@ export default function CanteenScreen() {
   },[])
   let checkFav = item.favorite
   const [favorites, setFavorties] = useState(checkFav);
-  console.log(checkFav)
+
+  const toggleFav = ()=>{
+    favorites ? setFavorties(false): setFavorties(true)
+  }
 
   return (
     <View>
@@ -44,9 +47,7 @@ export default function CanteenScreen() {
           >
             <View className='flex-row justify-between items-center'>
               <Text className="font-bold text-3xl"> {item.name}</Text>
-              <TouchableOpacity onPress={() =>
-                favorites ? setFavorties(false) : setFavorties(true)
-              }>
+              <TouchableOpacity onPress={toggleFav}>
                 <Icon.Heart height='20' width='20' stroke={favorites ? 'white' : 'black'} strokeWidth={1} fill={favorites ? 'red' : 'white'} />
               </TouchableOpacity>
             </View>

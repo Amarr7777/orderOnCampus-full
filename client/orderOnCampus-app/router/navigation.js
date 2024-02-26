@@ -24,56 +24,55 @@ export default function navigation() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const getData = async () => {
     const data = await AsyncStorage.getItem('isLoggedIn');
-    setIsLoggedIn(data)
+    console.log(data);
+    if(data){
+      setIsLoggedIn(true)
+    }else{
+      setIsLoggedIn(false)
+    }
   }
   useEffect(() => { getData() }, [])
 
-  const TabNav = () => {
+  const LoginNav = () => {
     const Stack = createNativeStackNavigator();
     return (
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Tab" component={TabNavigation} />
-        <Stack.Screen name="Offers" component={OfferScreen} />
-        <Stack.Screen name="Canteen" component={CanteenScreen} />
-        <Stack.Screen name="Cart" options={{ presentation: 'modal' }} component={CartScreen} />
-        <Stack.Screen name="Payment" options={{ presentation: 'fullScreenModal' }} component={PaymentScreen} />
-        <Stack.Screen name="FoodPrep" options={{ presentation: 'fullScreenModal' }} component={FoodPrepScreen} />
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}>
+         <Stack.Screen name="Login" component={LoginScreen} />
+         <Stack.Screen name="Register" component={RegisterScreen} />
+         <Stack.Screen name="Tab" component={TabNavigation} />
+         <Stack.Screen name="Offers" component={OfferScreen} />
+         <Stack.Screen name="Canteen" component={CanteenScreen} />
+         <Stack.Screen name="Cart" options={{ presentation: 'modal' }} component={CartScreen} />
+         <Stack.Screen name="Payment" options={{ presentation: 'fullScreenModal' }} component={PaymentScreen} />
+         <Stack.Screen name="FoodPrep" options={{ presentation: 'fullScreenModal' }} component={FoodPrepScreen} />
       </Stack.Navigator>
     );
   };
-
-  const LogInNav = () => {
+  const TabNav = () => {
     const Stack = createNativeStackNavigator();
     return (
-
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Tab" component={TabNavigation} />
-        <Stack.Screen name="Offers" component={OfferScreen} />
-        <Stack.Screen name="Canteen" component={CanteenScreen} />
-        <Stack.Screen name="Cart" options={{ presentation: 'modal' }} component={CartScreen} />
-        <Stack.Screen name="Payment" options={{ presentation: 'fullScreenModal' }} component={PaymentScreen} />
-        <Stack.Screen name="FoodPrep" options={{ presentation: 'fullScreenModal' }} component={FoodPrepScreen} />
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}>
+         <Stack.Screen name="Tab" component={TabNavigation} />
+         <Stack.Screen name="Offers" component={OfferScreen} />
+         <Stack.Screen name="Canteen" component={CanteenScreen} />
+         <Stack.Screen name="Cart" options={{ presentation: 'modal' }} component={CartScreen} />
+         <Stack.Screen name="Payment" options={{ presentation: 'fullScreenModal' }} component={PaymentScreen} />
+         <Stack.Screen name="FoodPrep" options={{ presentation: 'fullScreenModal' }} component={FoodPrepScreen} />
+         <Stack.Screen name="Login" component={LoginScreen} />
+         <Stack.Screen name="Register" component={RegisterScreen} />
       </Stack.Navigator>
     );
   };
 
   return (
-    // <NavigationContainer>
-    //   {isLoggedIn ? <TabNav/> : <LogInNav/>}
-    // </NavigationContainer>
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Tab" component={TabNavigation} />
-        <Stack.Screen name="Offers" component={OfferScreen} />
-        <Stack.Screen name="Canteen" component={CanteenScreen} />
-        <Stack.Screen name="Cart" options={{ presentation: 'modal' }} component={CartScreen} />
-        <Stack.Screen name="Payment" options={{ presentation: 'fullScreenModal' }} component={PaymentScreen} />
-        <Stack.Screen name="FoodPrep" options={{ presentation: 'fullScreenModal' }} component={FoodPrepScreen} />
-      </Stack.Navigator>
+      {isLoggedIn ? <TabNav /> : <LoginNav />}
     </NavigationContainer>
   );
 }

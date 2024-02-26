@@ -1,43 +1,46 @@
-const AllCanteen = require('../model/canteenDB');
-
+const Canteen = require('../model/canteen.model');
+const Staff = require('../model/staff.model');
+const jwt = require('jsonwebtoken');
+const secretKey = 'your_secret_key';
+// Register canteen 
 exports.registerCanteen = async (req, res) => {
-    // Logic for canteen staff registration
-
-    const { name, email, password } = req.body;
-    const oldUser = await canteenStaff.findOne({ email: email });
-    if (oldUser) {
-        res.json('user already exists')
-    } else {
-        const encryptedPassword = await bcrypt.hash(password, 10);
-        try {
-            await canteenStaff.create({
-                name,
-                email,
-                password: encryptedPassword,
-            });
-            res.send({ status: 'ok', data: "canteen staff created" });
-        } catch (error) {
-            res.status(500).send({ status: 'error', data: error });
-        }
-    }
-    // Logic for canteen registration 
-    const { canteenName, location, canteenDescription, category, dishName, dishDescription, price } = req.body;
     try {
-        const newDish = { dishName, dishDescription, price };
-        await AllCanteen.create({
-            canteenName,
-            location: location,
-            canteenDescription: canteenDescription,
-            category,
-            dishes: [newDish]
-        });
-        
-        res.send({ status: 'ok', data: 'canteeen created' });
+        const { canteenName, location, canteenDescription, category, openingHours, menu } = req.body;
+        const canteen = await Canteen.create({ name: canteenName, location, canteenDescription, category, openingHours, menu });
+        const createdCanteenId = canteen._id;
+        console.log("created ID", createdCanteenId);
+
+        const token = req.cookies.token // Get the JWT token from the request cookies
+       console.log(token)
+        if (!token) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+        const user = jwt.verify(token, secretKey)
+        const loggedUser = Staff.findOne({ _id: user._id }).then(async (userData) => {
+            const staffId = userData._id;
+            console.log("Staff Id is ", staffId)
+            const updatedStaff =  await Staff.findByIdAndUpdate(
+                staffId,
+                { $push: { ownedCanteens: createdCanteenId } },
+                { new: true }
+            );
+        })
+        res.status(201).json({ message: 'Canteen created successfully' });
     } catch (error) {
-        console.log(error);
-        res.status(500).send({ status: 'error', data: "Internal server error" });
+        res.status(400).json({ message: error.message });
     }
 };
 
-
-
+exports.getCanteenMenu = async (req, res) => {
+    try {
+        const canteenId = req.params.canteenId;
+        const canteen = await Canteen.findById(canteenId).populate('menu');
+        if (!canteen) {
+            return res.status(404).json({ message: "Canteen not found" });
+        }
+        res.json(canteen.menu);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
