@@ -20,6 +20,7 @@ export default function CanteenSlide({ activeCategory, filteredData }) {
     await axios.get('http://0.0.0.0:5001/canteens/get-canteens')
       .then((res) => {
         setAllCanteens(res.data.data);
+        console.log(allCanteens)
       })
       .catch(err => console.log(err))
   }

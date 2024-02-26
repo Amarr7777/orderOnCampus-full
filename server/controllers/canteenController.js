@@ -33,7 +33,7 @@ exports.registerCanteen = async (req, res) => {
 //get canteens
 exports.getAllCanteens = async (req, res) => {
     try {
-        const canteens = await Canteen.find();
+        const canteens = await Canteen.find().populate('menu');
         res.send({status:"ok",data:canteens})
       } catch (error) {
         console.error(error);

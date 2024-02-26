@@ -45,7 +45,7 @@ function AddNewItem({ addNewForm, setAddNewForm }) {
       avialable,
     };
     axios
-      .put(`http://localhost:5001/menu/${menuItemId}`, data)
+      .post(`http://localhost:5001/menu/add`, data)
       .then(() => {
         alert("Successfully added new item!");
         setAddNewForm(false);
