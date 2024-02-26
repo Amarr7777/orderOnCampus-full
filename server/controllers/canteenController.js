@@ -30,7 +30,16 @@ exports.registerCanteen = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
-
+//get canteens
+exports.getAllCanteens = async (req, res) => {
+    try {
+        const canteens = await Canteen.find();
+        res.send({status:"ok",data:canteens})
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+      }
+}
 exports.getCanteenMenu = async (req, res) => {
     try {
         const canteenId = req.params.canteenId;

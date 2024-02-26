@@ -1,22 +1,38 @@
 import { View, Text, TouchableOpacity, TextInput } from 'react-native'
-import React, { useState } from 'react'
-import { allCanteens, categories } from '../constants'
+import React, { useEffect, useState } from 'react'
+import { categories } from '../constants'
 import CanteenSlide from './CanteenSlide';
 import * as Icon from "react-native-feather";
-
+import axios from 'axios'
 export default function Categories() {
+    const [allCanteens, setAllCanteens] = useState([])
     const [activeCategory, setActiveCategory] = useState(1);
     const [searchQuery, setSearchQuery] = useState('');
-    const [filteredData, setFilteredData] = useState(allCanteens);
+    const [filteredData, setFilteredData] = useState([]);
+
+    const getCanteens = async () => {
+        await axios.get('http://0.0.0.0:5001/canteens/get-canteens')
+          .then((res) => {
+            setAllCanteens(res.data.data);
+            setFilteredData(res.data.data)
+          })
+          .catch(err => console.log(err))
+      }
+      useEffect(() => {
+        getCanteens()
+      }, [])
 
     const handleSearch = (query) => {
         setActiveCategory(0)
         setSearchQuery(query);
-        const filteredResults = allCanteens.restaurants.filter(item =>
+        const filteredResults = allCanteens.filter(item =>
             item.name.toLowerCase().includes(query.toLowerCase())
         );
 
         setFilteredData(filteredResults);
+        console.log('====================================');
+        console.log(filteredData);
+        console.log('====================================');
     }
     return (
         <>
@@ -49,7 +65,7 @@ export default function Categories() {
                     })
                 }
             </View>
-            <CanteenSlide activeCategory={activeCategory} filteredData={filteredData} />
+            <CanteenSlide  filteredData={filteredData} />
         </>
     )
 }

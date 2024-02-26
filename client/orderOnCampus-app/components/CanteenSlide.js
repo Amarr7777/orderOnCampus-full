@@ -1,28 +1,39 @@
 import { View, Text, ScrollView, Dimensions, StyleSheet, TouchableOpacity, TextInput } from 'react-native'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CanteenCard from './CanteenCard';
-import { allCanteens } from '../constants';
+// import { allCanteens } from '../constants';
 import * as Icon from "react-native-feather";
-import { heightPercentageToDP as hp,widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import axios from 'axios';
 
 
 export default function CanteenSlide({ activeCategory, filteredData }) {
+  const [allCanteens, setAllCanteens] = useState([])
   const windowHeight = Dimensions.get('window').height;
-  const allCategory = allCanteens.restaurants.filter(canteen => canteen.categories && canteen.categories.includes('all'));
-  const breakfast = allCanteens.restaurants.filter(canteen => canteen.categories && canteen.categories.includes('breakfast'));
-  const lunch = allCanteens.restaurants.filter(canteen => canteen.categories && canteen.categories.includes('lunch'));
-  const snacks = allCanteens.restaurants.filter(canteen => canteen.categories && canteen.categories.includes('snacks'));
+  
+  const allCategory = allCanteens.filter(canteen => canteen.categories && canteen.categories.includes('all'));
+  const breakfast = allCanteens.filter(canteen => canteen.categories && canteen.categories.includes('breakfast'));
+  const lunch = allCanteens.filter(canteen => canteen.categories && canteen.categories.includes('lunch'));
+  const snacks = allCanteens.filter(canteen => canteen.categories && canteen.categories.includes('snacks'));
 
-
-
-
+  const getCanteens = async () => {
+    await axios.get('http://0.0.0.0:5001/canteens/get-canteens')
+      .then((res) => {
+        setAllCanteens(res.data.data);
+      })
+      .catch(err => console.log(err))
+  }
+  useEffect(() => {
+    getCanteens()
+  }, [])
+  
   let renderedCategory;
   let Category;
   if (activeCategory === 1) {
     Category = "Campus Canteens"
     renderedCategory = [allCategory].map((canteen, index) => {
       return (
-        <CanteenCard key={index} canteen={canteen} />
+        <CanteenCard key={index} canteen={canteen}  />
       )
     })
   } else if (activeCategory === 2) {
@@ -36,14 +47,14 @@ export default function CanteenSlide({ activeCategory, filteredData }) {
     Category = "Lunch"
     renderedCategory = [lunch].map((canteen, index) => {
       return (
-        <CanteenCard key={index} canteen={canteen} />
+        <CanteenCard key={index}  canteen={canteen}/>
       )
     })
   } else if (activeCategory === 4) {
     Category = "Snacks"
     renderedCategory = [snacks].map((canteen, index) => {
       return (
-        <CanteenCard key={index} canteen={canteen} />
+        <CanteenCard key={index}  canteen={canteen}/>
       )
     })
   } else {
@@ -78,7 +89,7 @@ export default function CanteenSlide({ activeCategory, filteredData }) {
             className="overflow-visible "
           >
             <View className="flex-row items-center justify-center"
-            style={{marginBottom: hp('2%')}}>
+              style={{ marginBottom: hp('2%') }}>
               {renderedCategory}
             </View>
           </ScrollView>

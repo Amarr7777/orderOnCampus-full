@@ -1,12 +1,25 @@
 import { Text, View, StyleSheet, TouchableWithoutFeedback, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
-import { allCanteens } from '../constants';
+import axios from 'axios'
 
 export default function CanteenCard({canteen}) {
+  // const [allCanteens,setAllCanteens] = useState([])
   const navigation = useNavigation();
-  
+//   const getCanteens = async()=>{
+//     await axios.get('http://0.0.0.0:5001/canteens/get-canteens')
+//     .then((res) => {
+//       setAllCanteens(res.data.data);
+//     })
+//     .catch(err => console.log(err))
+//   }
+//   useEffect(() => {
+//     getCanteens()
+//     console.log(allCanteens)
+    
+// }, [])
+
   return (
     <>
     {
@@ -14,7 +27,7 @@ export default function CanteenCard({canteen}) {
         return(
           <TouchableWithoutFeedback
           key={index}
-            onPress={()=>{ navigation.navigate('Canteen',{...canteen})}}>
+            onPress={()=>{ navigation.navigate('Canteen',{...allCanteens})}}>
             <View className="items-center w-fit h-fit justify-center p-10 rounded-xl mx-5" style={styles.container}>
               <Image
                 source={canteen.image}
@@ -26,8 +39,7 @@ export default function CanteenCard({canteen}) {
         )
       })
     }
-    </>
-          
+    </>        
   )
 }
 
