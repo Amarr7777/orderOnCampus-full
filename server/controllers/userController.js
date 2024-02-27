@@ -62,7 +62,13 @@ exports.getUser = async (req, res) => {
         const user = jwt.verify(token, secretKey);
         const userData = await User.findOne({ _id: user._id })
             .populate('favoriteCanteens') // Populate the favoriteCanteens field
-            .populate('orders'); // Populate the orders field
+            .populate('orders') // Populate the orders field
+            .populate({
+                path: 'favoriteCanteens',
+                populate: {
+                    path: 'menu' // Populate the menu field of each favoriteCanteen
+                }
+            }); 
         console.log("User data",userData)
         if (!userData) {
             return res.status(404).json({ msg: 'User not found' });

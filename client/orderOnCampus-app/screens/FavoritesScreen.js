@@ -12,9 +12,13 @@ export default function FavoritesScreen() {
   const [favoriteCanteens, setFavoriteCanteens] = useState([])
   const navigation = useNavigation()
   // Get the favorite canteens from
+  const token = useSelector(selectToken);
+
   useEffect(() => {
-    const token = useSelector(selectToken);
     setFavoriteCanteens(token.data.favoriteCanteens)
+    console.log('====================================');
+    console.log(token.data.favoriteCanteens);
+    console.log('====================================');
   }, [])
 
   // console.log("fav screen",token.data.favoriteCanteens)
@@ -26,9 +30,9 @@ export default function FavoritesScreen() {
           <View className="py-10 px-5 bg-white">
             <Text className="font-bold text-3xl">Favorites</Text>
             {
-              [favoriteCanteens].map((canteen, index) => {
+              token.data.favoriteCanteens.map((canteen, index) => {
                 return (
-                  <CanteenRow key={index} canteen={canteen.restaurants} />
+                  <CanteenRow key={index} canteen={canteen} />
                 )
               })
             }
