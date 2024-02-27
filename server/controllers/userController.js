@@ -95,21 +95,22 @@ exports.addFavorites = async (req, res) => {
 };
 //delete fav
 exports.deleteFavorite = async (req, res) => {
-    const { userId, canteenId } = req.body; 
-    console.log('====================================');
-    console.log(userId);
-    console.log('====================================');
+    const { userId, canteenId } = req.params;
     try {
         const user = await User.findById(userId);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
+
+        // Check if the canteenId exists in the user's favoriteCanteens array
         if (!user.favoriteCanteens.includes(canteenId)) {
-            return res.status(400).json({ message: 'Canteen is not in favorites' });
+            return res.status(400).json({ message: 'Canteen not found in favorites' });
         }
-        user.favoriteCanteens = user.favoriteCanteens.filter(id => id !== canteenId);
-        await user.save();
-        return res.status(200).json({ message: 'Canteen removed from favorites successfully', user: user });
+
+        // Use $pull operator to remove the specified canteenId from the favoriteCanteens array
+        await User.findByIdAndUpdate(userId, { $pull: { favoriteCanteens: canteenId } });
+
+        return res.status(200).json({ message: 'Canteen removed from favorites successfully' });
     } catch (error) {
         console.error('Error removing favorite canteen:', error);
         return res.status(500).json({ message: 'Internal server error' });

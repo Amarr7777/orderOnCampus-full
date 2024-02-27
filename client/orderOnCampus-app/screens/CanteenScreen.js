@@ -28,8 +28,13 @@ export default function CanteenScreen() {
       dispatch(setCanteen({ ...item }))
       setMenuItems(item.menu)
       setUserId(token.data._id);
+      const userFavoriteCanteens = token.data.favoriteCanteens.map(canteen => canteen._id);
+      console.log("favoriteCanteens:   ",userFavoriteCanteens)
+      if(userFavoriteCanteens.includes(item._id)){
+        setFavorties(true)
+      }
     }
-  }, [item])
+  }, [])
 
 
 
@@ -42,12 +47,12 @@ export default function CanteenScreen() {
     if (!favorites) {
       axios.post("http://0.0.0.0:5001/users/set-fav", data).then((res) => {
         alert("added to favorite");
-        console.log(res);
+        // console.log(res);
       }).catch(err => console.log(err))
     } else {
-      axios.post(`http://0.0.0.0:5001/users/rv-fav/${userId}/${item._id}`).then((res) => {
+      axios.delete(`http://localhost:5001/users/${userId}/favoriteCanteens/${item._id}`).then((res) => {
       alert("removed from favorite");
-      console.log(res);
+      // console.log(res);
     }).catch(err => console.log(err))
     }
   }

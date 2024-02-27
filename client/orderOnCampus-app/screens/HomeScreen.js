@@ -18,7 +18,6 @@ export default function HomeScreen() {
         const token = await AsyncStorage.getItem("token")
         console.log("this",token);
         axios.post("http://0.0.0.0:5001/users/get-user",{token}).then((res) => {
-            console.log(res.data)
             setName(res.data.data.name)
             // dispatch(setToken({ name: res.data.data.name, email: res.data.data.email, _id: res.data.data._id }));
             dispatch(setToken({ data: res.data.data }));
@@ -28,7 +27,7 @@ export default function HomeScreen() {
     useEffect(() => {
         getData();
     }, [])
-
+    
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar style='dark' />
