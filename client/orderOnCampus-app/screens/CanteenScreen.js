@@ -8,28 +8,48 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import { useDispatch, useSelector } from 'react-redux';
 import { selectCanteen, setCanteen } from '../slices/canteenSlice';
 import CartIcon from '../components/CartIcon';
+import { selectToken } from '../slices/AuthSlice';
+import axios from 'axios'
 export default function CanteenScreen() {
   const navigation = useNavigation()
   const { params } = useRoute();
   let item = params;
+
   const [menuItems, setMenuItems] = useState([]);
+  const [favorites, setFavorties] = useState(false);
+  const [userId, setUserId] = useState("")
 
   const canteen = useSelector(selectCanteen);
+  const token = useSelector(selectToken);
   const dispatch = useDispatch()
-  console.log(item.menu)
 
   useEffect(() => {
     if (item && item._id) {
       dispatch(setCanteen({ ...item }))
       setMenuItems(item.menu)
+      setUserId(token.data._id);
     }
-  }, [])
-  console.log("MENU ITEM",menuItems)
-  let checkFav = item.favorite
-  const [favorites, setFavorties] = useState(checkFav);
+  }, [item])
+
+
 
   const toggleFav = () => {
     favorites ? setFavorties(false) : setFavorties(true)
+    const data = {
+      canteenId: item._id,
+      userId: userId,
+    }
+    if (!favorites) {
+      axios.post("http://0.0.0.0:5001/users/set-fav", data).then((res) => {
+        alert("added to favorite");
+        console.log(res);
+      }).catch(err => console.log(err))
+    } else {
+      axios.post(`http://0.0.0.0:5001/users/rv-fav/${userId}/${item._id}`).then((res) => {
+      alert("removed from favorite");
+      console.log(res);
+    }).catch(err => console.log(err))
+    }
   }
 
   return (

@@ -5,7 +5,9 @@ import { useNavigation } from '@react-navigation/native'
 
 export default function FoodPrepScreen() {
     const navigation = useNavigation();
+    
     useEffect(()=>{
+
         setTimeout(()=>{
             navigation.navigate('Tab');
         },1500)

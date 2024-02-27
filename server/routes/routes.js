@@ -42,6 +42,10 @@ router.post('/users/register', UserController.registerUser);
 router.post('/users/login', UserController.loginUser);
 //Get user
 router.post('/users/get-user', UserController.getUser);
+// Add favorites
+router.post('/users/set-fav',UserController.addFavorites)
+//delete favorites
+router.delete('/users/rv-fav/:userId/:canteenId', UserController.deleteFavorite);
 // Get user favorites
 router.get('/users/favorites', UserController.getFavorites);
 // Get user orders

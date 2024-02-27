@@ -48,16 +48,73 @@ exports.loginUser = async (req, res) => {
 };
 //getUser
 exports.getUser = async (req, res) => {
-    const { token } = req.body
+    // const { token } = req.body
+    // try {
+    //     const user = jwt.verify(token, secretKey)
+    //     User.findOne({  _id: user._id }).then((userData) => {
+    //         return res.send({ status: "ok", data: userData })
+    //     });
+    // } catch {
+    //     return res.status(401).json({ msg: 'Auth failed' })
+    // }
+    const { token } = req.body;
     try {
-        const user = jwt.verify(token, secretKey)
-        User.findOne({  _id: user._id }).then((userData) => {
-            return res.send({ status: "ok", data: userData })
-        });
-    } catch {
-        return res.status(401).json({ msg: 'Auth failed' })
+        const user = jwt.verify(token, secretKey);
+        const userData = await User.findOne({ _id: user._id })
+            .populate('favoriteCanteens') // Populate the favoriteCanteens field
+            .populate('orders'); // Populate the orders field
+        console.log("User data",userData)
+        if (!userData) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        return res.send({ status: "ok", data: userData });
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        return res.status(401).json({ msg: 'Auth failed' });
     }
 }
+//add fav
+exports.addFavorites = async (req, res) => {
+    const { userId, canteenId } = req.body; 
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        if (user.favoriteCanteens.includes(canteenId)) {
+            return res.status(400).json({ message: 'Canteen already added to favorites' });
+        }
+        user.favoriteCanteens.push(canteenId);
+        await user.save();
+        return res.status(200).json({ message: 'Canteen added to favorites successfully', user: user });
+    } catch (error) {
+        console.error('Error adding favorite canteen:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+//delete fav
+exports.deleteFavorite = async (req, res) => {
+    const { userId, canteenId } = req.body; 
+    console.log('====================================');
+    console.log(userId);
+    console.log('====================================');
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        if (!user.favoriteCanteens.includes(canteenId)) {
+            return res.status(400).json({ message: 'Canteen is not in favorites' });
+        }
+        user.favoriteCanteens = user.favoriteCanteens.filter(id => id !== canteenId);
+        await user.save();
+        return res.status(200).json({ message: 'Canteen removed from favorites successfully', user: user });
+    } catch (error) {
+        console.error('Error removing favorite canteen:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
 // favorites
 exports.getFavorites = async (req, res) => {

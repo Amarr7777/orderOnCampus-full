@@ -18,7 +18,7 @@ export default function UserScreen() {
   useEffect(() => {
     setName(token.data.name)
     setEmail(token.data.email)
-  }, [])
+  }, []) 
 
   const handleLogout = () => {
     AsyncStorage.setItem('isLoggedIn', '')
