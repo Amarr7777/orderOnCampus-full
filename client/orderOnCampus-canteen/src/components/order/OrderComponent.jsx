@@ -2,7 +2,7 @@ import React from "react";
 import OrderList from "./OrderList";
 import OrderDetails from "./OrderDetails";
 
-function OrderComponent({userData}) {
+function OrderComponent() {
   // console.log("orderComponent",userData)
   return (
     <div className="grid grid-cols-1 w-full gap-4 p-5 m-x-20 lg:grid-cols-3 lg:gap-8 ">

@@ -4,8 +4,8 @@ const mongoose = require('mongoose')
 const cors = require('cors');
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser');
-
-
+const http = require('http').Server(app); // Import http module
+const io = require('socket.io')(http);
 
 app.use(express.json())
 app.use(cookieParser())
@@ -29,12 +29,17 @@ mongoose.connect(mongoUrl).then(() => {
         console.log(error)
     }
 })
-
-
-
-
 app.use('/', routes);
-app.listen(5001, () => {
-    console.log("Server is running on port 5001");
-})
+// Socket.IO connection handling
+io.on('connection', (socket) => {
+    console.log('A client connected');
+
+    // You can listen for events and emit events here
+});
+
+// Start the server
+const PORT = process.env.PORT || 5001;
+http.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 

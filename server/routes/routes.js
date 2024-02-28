@@ -47,7 +47,7 @@ router.post('/users/set-fav',UserController.addFavorites)
 //delete favorites
 router.delete('/users/:userId/favoriteCanteens/:canteenId', UserController.deleteFavorite);
 // Get user favorites
-router.get('/users/favorites', UserController.getFavorites);
+router.get('/users/:userId/favorites', UserController.getFavorites);
 // Get user orders
 router.get('/users/orders', UserController.getOrders);
 

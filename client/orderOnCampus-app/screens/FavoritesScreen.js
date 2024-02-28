@@ -7,6 +7,7 @@ import CanteenRow from '../components/CanteenRow';
 import { allCanteens } from '../constants';
 import { useSelector } from 'react-redux';
 import { selectToken } from '../slices/AuthSlice';
+import axios from 'axios';
 
 export default function FavoritesScreen() {
   const [favoriteCanteens, setFavoriteCanteens] = useState([])
@@ -14,12 +15,19 @@ export default function FavoritesScreen() {
   // Get the favorite canteens from
   const token = useSelector(selectToken);
 
+  // const getData = async()=>{
+  //   await axios.get(`http://0.0.0.0:5001/users/${token.data._id}/favorites`).then((res)=>{
+  //     console.log("favorite screen",res.data);
+  //     setFavoriteCanteens(res.data)
+  //   }).catch(err=>console.log(err))
+  // }
   useEffect(() => {
     setFavoriteCanteens(token.data.favoriteCanteens)
     console.log('====================================');
     console.log(token.data.favoriteCanteens);
     console.log('====================================');
-  }, [])
+    // getData()
+  }, [favoriteCanteens])
 
   // console.log("fav screen",token.data.favoriteCanteens)
   return (

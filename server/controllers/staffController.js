@@ -67,7 +67,16 @@ exports.loginStaff = async (req, res) => {
 exports.authStaff = async (req, res) => {
     // console.log(res.data)
     const userData = res.locals.user;
-    res.json({ userData });
+    await userData
+        // .populate('ownedCanteens')
+        .populate({
+            path: 'ownedCanteens',
+            populate: {
+                path: 'menu'
+            }
+        })
+        console.log("staff data", userData)
+        res.send({ status: "ok", data: userData });
 }
 
 exports.logout = async (req, res) => {

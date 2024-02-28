@@ -159,7 +159,7 @@ export default function RegisterScreen() {
                     <TextInput placeholder='password'
                         secureTextEntry={!showPassword}
                         onChangeText={(text) => handlePassword(text)}
-                        className=" py-5 pr-20 rounded-md text-left"
+                        className=" py-5 pr-20 w-3/4 rounded-md text-left"
                     />
                     {password.length < 1 ? null : passwordVerify ? (
                         // <FaCheckCircle className="m-2 text-green-900" />
@@ -183,7 +183,7 @@ export default function RegisterScreen() {
                     <TextInput placeholder='Confirm  Password'
                         secureTextEntry={!showPassword}
                         onChangeText={(text) => handleCpassword(text)}
-                        className=" py-5 pr-2  rounded-md text-left"
+                        className=" py-5 pr-2 w-3/4 rounded-md text-left"
                     />
                     {cpassword.length < 1 ? null : cpasswordVerify ? (
                         // <FaCheckCircle className="m-2 text-green-900" />

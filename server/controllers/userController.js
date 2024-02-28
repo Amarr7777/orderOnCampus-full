@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const io = require('socket.io')
 const User = require('../model/user.model');
 const Order = require('../model/order.model')
 const secretKey = 'your_secret_key';
@@ -48,15 +49,6 @@ exports.loginUser = async (req, res) => {
 };
 //getUser
 exports.getUser = async (req, res) => {
-    // const { token } = req.body
-    // try {
-    //     const user = jwt.verify(token, secretKey)
-    //     User.findOne({  _id: user._id }).then((userData) => {
-    //         return res.send({ status: "ok", data: userData })
-    //     });
-    // } catch {
-    //     return res.status(401).json({ msg: 'Auth failed' })
-    // }
     const { token } = req.body;
     try {
         const user = jwt.verify(token, secretKey);
@@ -73,7 +65,7 @@ exports.getUser = async (req, res) => {
         if (!userData) {
             return res.status(404).json({ msg: 'User not found' });
         }
-
+        // io.emit('userDataUpdated', userData);
         return res.send({ status: "ok", data: userData });
     } catch (error) {
         console.error('Error fetching user:', error);
@@ -125,10 +117,10 @@ exports.deleteFavorite = async (req, res) => {
 
 // favorites
 exports.getFavorites = async (req, res) => {
+    const{userId} = req.params
     try {
-        const userId = req.user.userId; // Assuming user ID is available in the request object after authentication
-        const user = await User.findById(userId).populate('favorites');
-        res.status(200).json(user.favorites);
+        const user = await User.findById(userId).populate('favoriteCanteens');
+        res.status(200).json(user.favoriteCanteens);
     } catch (error) {
         res.status(500).json({ error: 'Could not retrieve favorites' });
     }

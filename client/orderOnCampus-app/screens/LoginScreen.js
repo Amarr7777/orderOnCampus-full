@@ -102,7 +102,7 @@ export default function LoginScreen() {
                     <TextInput placeholder='password'
                         secureTextEntry={!showPassword}
                         onChangeText={(e) => handlePassword(e)}
-                        className="py-5 pr-20 rounded-md text-left" />
+                        className="py-5 pr-5 w-full rounded-md text-left " />
                 </View>
                 {!incorrectPassword ? null : (
                     <View style={{ minWidth: wp('80%'), maxWidth: wp('80%') }}>

@@ -8,6 +8,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
 import { setToken } from '../slices/AuthSlice';
 import { useDispatch } from 'react-redux';
+import io from 'socket.io-client';
+const socket = io('http://localhost:5001');
 
 
 
@@ -16,7 +18,6 @@ export default function HomeScreen() {
     const[name,setName] = useState("")
     const getData = async()=>{
         const token = await AsyncStorage.getItem("token")
-        console.log("this",token);
         axios.post("http://0.0.0.0:5001/users/get-user",{token}).then((res) => {
             setName(res.data.data.name)
             // dispatch(setToken({ name: res.data.data.name, email: res.data.data.email, _id: res.data.data._id }));
@@ -26,6 +27,14 @@ export default function HomeScreen() {
     const navigation = useNavigation();
     useEffect(() => {
         getData();
+        socket.on('userDataUpdated', (userData) => {
+            console.log('Received user data:', userData);
+            // setName(userData.name);
+        });
+
+        return () => {
+            socket.off('userDataUpdated');
+        };
     }, [])
     
     return (

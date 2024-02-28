@@ -29,7 +29,7 @@ export default function CanteenScreen() {
       setMenuItems(item.menu)
       setUserId(token.data._id);
       const userFavoriteCanteens = token.data.favoriteCanteens.map(canteen => canteen._id);
-      console.log("favoriteCanteens:   ",userFavoriteCanteens)
+      // console.log("favoriteCanteens:   ",userFavoriteCanteens)
       if(userFavoriteCanteens.includes(item._id)){
         setFavorties(true)
       }
@@ -82,7 +82,8 @@ export default function CanteenScreen() {
             </View>
             <Text className="px-1 text-sm " > {item.location}</Text>
           </View>
-          <View className="py-10 px-5 bg-white">
+          <View className="flex py-10 px-5 bg-white "
+          style={{minHeight:hp('60%')}}>
             <Text className="font-bold text-3xl">Menu</Text>
             {
               menuItems.map((dish, index) => <DishRow item={{ ...dish }} key={index} />)

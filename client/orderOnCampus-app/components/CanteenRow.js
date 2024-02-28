@@ -5,13 +5,10 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function CanteenRow({ canteen }) {
   const navigation = useNavigation();
-  console.log("row:   ",canteen)
-  // const favoriteCanteens = canteen.filter(canteen => canteen.favorite == true);
+  // console.log("row:   ",canteen)
+  
   return (
     <>
-      {/* { */}
-        {/* // canteen.map((canteen, index) => { */}
-          {/* // return ( */}
             <TouchableOpacity className="flex-col items-center p-5 shadow bg-white rounded-lg mb-5 mt-2 "
               onPress={() => navigation.navigate('Canteen', { ...canteen })}
             >
@@ -24,9 +21,6 @@ export default function CanteenRow({ canteen }) {
                 <Text className="font-bold text-xl ml-4">{canteen.name}</Text>
               </View>
             </TouchableOpacity>
-          {/* // ) */}
-        {/* }) */}
-      {/* // } */}
     </>
   )
 }

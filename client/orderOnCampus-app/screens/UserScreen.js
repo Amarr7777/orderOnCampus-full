@@ -21,9 +21,9 @@ export default function UserScreen() {
   }, []) 
 
   const handleLogout = () => {
+    navigation.navigate('Login')
     AsyncStorage.setItem('isLoggedIn', '')
     AsyncStorage.setItem('token', '')
-    navigation.navigate('Login')
     dispatch(setToken({}))
   }
 
