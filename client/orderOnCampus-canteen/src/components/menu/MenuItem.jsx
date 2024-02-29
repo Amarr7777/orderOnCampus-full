@@ -26,7 +26,7 @@ function MenuItem({ menuItem }) {
   return (
     <>
       <div className="flex items-center justify-between p-2 border border-gray-200 max-h-20 min-h-20 lg:max-h-20 lg:min-h-20">
-        <div className="flex flex-col min-w-[30%] lg:min-w-[0]">
+        <div className="flex flex-col min-w-[20vh] lg:min-w-[30vh]">
           <p className="text-green-900">{menuItem.name}</p>
           <p className="text-gray-500 font-light">{menuItem.description}</p>
           <p className="text-black font-light">₹{menuItem.price}</p>
