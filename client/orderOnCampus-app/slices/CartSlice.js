@@ -5,15 +5,22 @@ const initialState = {
 };
 
 export const cartSlice = createSlice({
-  name: 'canteen',
+  name: 'cart',
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      state.items = [...state.items, action.payload];
+      state.items.push(action.payload); // Use push instead of spread operator for appending a single item
     },
     removeFromCart: (state, action) => {
-      const newCart = state.items.filter(item => item._id !== action.payload._id);
-      state.items = newCart;
+      const indexToRemove = state.items.findIndex(item => item._id === action.payload._id);
+      if (indexToRemove !== -1) {
+        const itemToRemove = state.items[indexToRemove];
+        if (itemToRemove.quantity > 1) {
+          state.items[indexToRemove].quantity -= 1;
+        } else {
+          state.items.splice(indexToRemove, 1);
+        }
+      }
     },
     emptyCart: (state) => {
       state.items = [];

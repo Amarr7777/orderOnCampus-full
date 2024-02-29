@@ -53,7 +53,9 @@ router.delete('/users/:userId/favoriteCanteens/:canteenId', UserController.delet
 // Get user favorites
 router.get('/users/:userId/favorites', UserController.getFavorites);
 // Get user orders
-router.get('/users/orders', UserController.getOrders);
+router.get('/users/:userId/orders', UserController.getOrders);
+// Place order
+router.post('/users/place-order', UserController.placeOrder);
 
 
 

@@ -60,8 +60,8 @@ exports.getUser = async (req, res) => {
                 populate: {
                     path: 'menu' // Populate the menu field of each favoriteCanteen
                 }
-            }); 
-        console.log("User data",userData)
+            });
+        console.log("User data", userData)
         if (!userData) {
             return res.status(404).json({ msg: 'User not found' });
         }
@@ -74,7 +74,7 @@ exports.getUser = async (req, res) => {
 }
 //add fav
 exports.addFavorites = async (req, res) => {
-    const { userId, canteenId } = req.body; 
+    const { userId, canteenId } = req.body;
     try {
         const user = await User.findById(userId);
         if (!user) {
@@ -117,7 +117,7 @@ exports.deleteFavorite = async (req, res) => {
 
 // favorites
 exports.getFavorites = async (req, res) => {
-    const{userId} = req.params
+    const { userId } = req.params
     try {
         const user = await User.findById(userId).populate('favoriteCanteens');
         res.status(200).json(user.favoriteCanteens);
@@ -125,16 +125,42 @@ exports.getFavorites = async (req, res) => {
         res.status(500).json({ error: 'Could not retrieve favorites' });
     }
 };
-// orders
+// orders 
 exports.getOrders = async (req, res) => {
+    const {userId} = req.params;
     try {
-        const userId = req.user.userId; // Assuming user ID is available in the request object after authentication
         const orders = await Order.find({ userId });
-        res.status(200).json(orders);
+        console.log(orders);
+        res.send({status: "ok", data:orders});
     } catch (error) {
         res.status(500).json({ error: 'Could not retrieve orders' });
     }
 };
+//place order
+exports.placeOrder = async (req, res) => {
+    try {
+        const { user, canteen, items, totalPrice, status } = req.body;
+        const newOrder = new Order({
+            user,
+            canteen,
+            items,
+            totalPrice,
+            status
+        });
+        const savedOrder = await newOrder.save();
+        await User.findByIdAndUpdate(
+            user,
+            { $push: { orders: savedOrder._id } }, // Add the new order's ObjectId to the 'orders' array
+            { new: true } // Return the updated document
+        );
+        res.status(201).json(savedOrder);
+    } catch (error) {
+        console.error("Error creating order:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+
 // paymentDetails
 // exports.updatePaymentDetails = async (req, res) => {
 //     try {

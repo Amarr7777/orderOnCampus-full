@@ -1,6 +1,6 @@
 import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import React, { Component, useEffect, useState } from 'react'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native'
 import * as Icon from "react-native-feather";
 import DishRow from '../components/DishRow';
 import { StatusBar } from 'expo-status-bar';
@@ -10,6 +10,7 @@ import { selectCanteen, setCanteen } from '../slices/canteenSlice';
 import CartIcon from '../components/CartIcon';
 import { selectToken } from '../slices/AuthSlice';
 import axios from 'axios'
+import { emptyCart } from '../slices/CartSlice';
 export default function CanteenScreen() {
   const navigation = useNavigation()
   const { params } = useRoute();
@@ -35,8 +36,6 @@ export default function CanteenScreen() {
       }
     }
   }, [])
-
-
 
   const toggleFav = () => {
     favorites ? setFavorties(false) : setFavorties(true)
@@ -86,7 +85,7 @@ export default function CanteenScreen() {
           style={{minHeight:hp('60%')}}>
             <Text className="font-bold text-3xl">Menu</Text>
             {
-              menuItems.map((dish, index) => <DishRow item={{ ...dish }} key={index} />)
+              menuItems.map((dish, index) => <DishRow item={{ ...dish }} canteenId={item._id} key={index} />)
             }
           </View>
         </View>

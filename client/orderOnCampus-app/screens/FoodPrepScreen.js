@@ -2,14 +2,49 @@ import { View, Text, SafeAreaView, TouchableOpacity, ImageBackground } from 'rea
 import React, { useEffect } from 'react'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native'
+import { selectCanteen } from '../slices/canteenSlice';
+import { selectToken } from '../slices/AuthSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { emptyCart, selectCartItems, selectCartTotal } from '../slices/CartSlice';
+import axios from 'axios';
 
 export default function FoodPrepScreen() {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+
+    const canteen = useSelector(selectCanteen);
+    const token = useSelector(selectToken);
+    const items = useSelector(selectCartItems);
+    const total = useSelector(selectCartTotal);
+    const status = 'placed'
+
+    const itemIds = items.map(item => item._id);
+
+    console.log("userID",token.data._id)
+    console.log("canteenID",canteen._id)
+    console.log("items",itemIds)
+    console.log("Total",total)
+    // console.log()
+
+    const postData = async()=>{
+        const orderData = {
+            user: token.data._id,
+            canteen: canteen._id,
+            items: itemIds, 
+            totalPrice: total,
+            status: 'placed' 
+          };
+        axios.post("http://0.0.0.0:5001/users/place-order",orderData).then(()=>{
+            // alert('Your Order has been placed!')
+        }).catch(err => console.log(err))
+    }
     
     useEffect(()=>{
-
+        postData()
         setTimeout(()=>{
             navigation.navigate('Tab');
+            dispatch(emptyCart())
+
         },1500)
     },[])
     return (

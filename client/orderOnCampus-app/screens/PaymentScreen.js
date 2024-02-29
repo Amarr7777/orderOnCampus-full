@@ -65,7 +65,7 @@ export default function PaymentScreen({ route }) {
                     style={{ width: wp('90%') }}
                     onPress={() => {
                         navigation.navigate('FoodPrep');
-                        dispatch(emptyCart())
+                        // dispatch(emptyCart())
                     }}
                 >
                     <Text className="text-white text-center font-extrabold text-lg">Place Order</Text>

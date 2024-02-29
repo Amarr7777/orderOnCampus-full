@@ -26,6 +26,7 @@ export default function HomeScreen() {
     }
     const navigation = useNavigation();
     useEffect(() => {
+        
         getData();
         socket.on('userDataUpdated', (userData) => {
             console.log('Received user data:', userData);
