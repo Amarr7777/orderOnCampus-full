@@ -24,7 +24,7 @@ export default function UserScreen() {
     navigation.navigate('Login')
     AsyncStorage.setItem('isLoggedIn', '')
     AsyncStorage.setItem('token', '')
-    dispatch(setToken({}))
+    // dispatch(setToken({}))
   }
 
 

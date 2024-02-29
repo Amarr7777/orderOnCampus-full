@@ -127,9 +127,11 @@ exports.getFavorites = async (req, res) => {
 };
 // orders 
 exports.getOrders = async (req, res) => {
-    const {userId} = req.params;
+    const {orderId} = req.params;
     try {
-        const orders = await Order.find({ userId });
+        const orders = await Order.find({ orderId })
+        .populate('canteen')
+        .populate('items');
         console.log(orders);
         res.send({status: "ok", data:orders});
     } catch (error) {

@@ -1,10 +1,36 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import * as Icon from "react-native-feather";
 import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import OrderItems from './OrderItems';
 
-export default function OrderCard() {
+export default function OrderCard({ data }) {
+    console.log("order Card", data)
+    const [canteenName, setCanteenName] = useState("")
+    const [canteenLoc, setCanteenLoc] = useState("")
+    const [commonItems, setCommonItems] = useState([])
+
+    const getData = async () => {
+        await axios.get(`http://0.0.0.0:5001/canteens/${data.canteen}/get-canteen`).then((res) => {
+            console.log("NEW ", res.data.data.menu)
+            setCanteenName(res.data.data.name);
+            setCanteenLoc(res.data.data.location);
+
+            const common = res.data.data.menu.filter(item => data.items.includes(item));
+            const itemCounts = {};
+            data.items.forEach(item => {
+                itemCounts[item] = (itemCounts[item] || 0) + 1;
+            });
+
+            setCommonItems(common.map(item => ({ id: item, count: itemCounts[item] })));
+        }).catch((err) => { console.log('Error', err) })
+    }
+    useEffect(() => {
+        getData();
+    }, [])
+
     const navigation = useNavigation();
     return (
         <View className="flex-col shadow bg-white rounded-lg "
@@ -19,35 +45,24 @@ export default function OrderCard() {
                             style={{ width: hp('10%'), height: hp('10%') }}
                         />
                         <View className="flex-col">
-                            <Text className="font-semi text-lg px-2 ">Taco Bell</Text>
-                            <Text className="font-semi text-sm px-2 ">HSR layout</Text>
+                            <Text className="font-semi text-lg px-2 ">{canteenName}</Text>
+                            <Text className="font-semi text-sm px-2 ">{canteenLoc}</Text>
                         </View>
                     </View>
-                    <TouchableOpacity className="flex-row items-start justify-center"
-                        onPress={() => navigation.navigate('Canteen')}
-                    >
-                        <Text className="text-green-900">View Menu</Text>
-                    </TouchableOpacity>
+                    <View>
+                        <Text className="text-green-900 text-md font-bold">{data.status}</Text>
+                    </View>
                 </View>
             </View>
-            <View className="bg-slate-200">
-                <View className="flex-row p-2">
-                    <Icon.Disc stroke='rgb(20 83 45)' />
-                    <Text className="font-semi text-sm px-2 ">2X Burger</Text>
-                </View>
-                <View className="flex-row p-2">
-                    <Icon.Droplet stroke='rgb(20 83 45)' />
-                    <Text className="font-semi text-sm px-2 ">2X Burger</Text>
-                </View>
-                <View className="flex-row p-2">
-                    <Icon.StopCircle stroke='rgb(20 83 45)' />
-                    <Text className="font-semi text-sm px-2 ">2X Burger</Text>
-                </View>
-            </View>
+            {
+                commonItems.map((item, index) => (
+                    <OrderItems key={index} food={item} />
+                ))
+            }
             <View className="p-5 flex-row space-x-2 items-end justify-end" >
                 <TouchableOpacity className="flex-row space-x-2 items-center p-2 rounded bg-green-900" >
-                    <Icon.RotateCcw stroke='white' width={wp('4%')} />
-                    <Text className="text-white" >Reorder</Text>
+                    {/* <Icon.Sliders stroke='white' width={wp('4%')} /> */}
+                    <Text className="text-white" > ₹ {data.totalPrice}</Text>
                 </TouchableOpacity>
             </View>
         </View>

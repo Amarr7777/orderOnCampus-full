@@ -35,7 +35,7 @@ export default function FavoritesScreen() {
       <StatusBar style='Dark' />
       <ScrollView>
         <View className="relative ">
-          <View className="py-10 px-5 bg-white">
+          <View className="py-10 px-5">
             <Text className="font-bold text-3xl">Favorites</Text>
             {
               token.data.favoriteCanteens.map((canteen, index) => {

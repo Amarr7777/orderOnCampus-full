@@ -1,4 +1,5 @@
 const Canteen = require('../model/canteen.model');
+const MenuItem = require('../model/menuItem.model')
 const Staff = require('../model/staff.model');
 const jwt = require('jsonwebtoken');
 const secretKey = 'your_secret_key';
@@ -11,7 +12,7 @@ exports.registerCanteen = async (req, res) => {
         console.log("created ID", createdCanteenId);
 
         const token = req.cookies.token // Get the JWT token from the request cookies
-       console.log(token)
+        console.log(token)
         if (!token) {
             return res.status(401).json({ message: 'Unauthorized' });
         }
@@ -19,7 +20,7 @@ exports.registerCanteen = async (req, res) => {
         const loggedUser = Staff.findOne({ _id: user._id }).then(async (userData) => {
             const staffId = userData._id;
             console.log("Staff Id is ", staffId)
-            const updatedStaff =  await Staff.findByIdAndUpdate(
+            const updatedStaff = await Staff.findByIdAndUpdate(
                 staffId,
                 { $push: { ownedCanteens: createdCanteenId } },
                 { new: true }
@@ -35,9 +36,34 @@ exports.getAllCanteens = async (req, res) => {
     try {
         const canteens = await Canteen.find().populate('menu');
         // console.log(canteens)
-        res.send({status:"ok",data:canteens})
-      } catch (error) {
+        res.send({ status: "ok", data: canteens })
+    } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal server error' });
-      }
+    }
 }
+
+//get canteen by id
+exports.getcanteenById = async (req, res) => {
+    const {canteenID} = req.params
+    try {
+        const canteen = await Canteen.findById(canteenID)
+        res.send({ status: "ok", data: canteen })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
+//get menu by id
+exports.getMenuById = async (req, res) => {
+    const { itemId } = req.params
+    console.log(itemId)
+    try {
+        const item = await MenuItem.findById(itemId)
+        res.send({ status: "ok", data: item })
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}        

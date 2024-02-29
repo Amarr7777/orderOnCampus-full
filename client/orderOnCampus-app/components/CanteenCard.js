@@ -16,7 +16,7 @@ export default function CanteenCard({ canteen }) {
               onPress={() => { navigation.navigate('Canteen', { ...canteen }) }}>
               <View className="items-center w-fit h-fit justify-center p-10 rounded-xl mx-5" style={styles.container}>
                 <Image
-                  source={canteen.image}
+                  source={require('../assets/restaurant.jpg')}
                   style={{ width: hp('30%'), height: hp('30%') }}
                   className="rounded-3xl p-5 mb-2" />
                 <Text className="text-white">{canteen.name}</Text>

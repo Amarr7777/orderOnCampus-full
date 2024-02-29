@@ -11,7 +11,11 @@ const Auth = require('../middleware/auth')
 router.post('/canteens', CanteenController.registerCanteen);
 // Get canteens
 router.get('/canteens/get-canteens',CanteenController.getAllCanteens)
+// Get canteen by id
+router.get('/canteens/:canteenID/get-canteen',CanteenController.getcanteenById)
 
+//get menu item by id
+router.get('/canteens/:itemId/get-item',CanteenController.getMenuById)
  
 
 // Register staff

@@ -5,8 +5,6 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function CanteenRow({ canteen }) {
   const navigation = useNavigation();
-  // console.log("row:   ",canteen)
-  
   return (
     <>
             <TouchableOpacity className="flex-col items-center p-5 shadow bg-white rounded-lg mb-5 mt-2 "
@@ -14,7 +12,7 @@ export default function CanteenRow({ canteen }) {
             >
               <Image
                 className="rounded-lg"
-                source={canteen.image}
+                source={require('../assets/restaurant.jpg')}
                 style={{ width: hp('40%'), height: hp('20%') }}
               />
               <View className="flex flex-1">

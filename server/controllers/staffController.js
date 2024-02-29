@@ -214,10 +214,10 @@ exports.setCanteenOpenStatus = async (req, res) => {
 
 
 exports.getCanteenOrders = async (req, res) => {
+    const { canteenId } = req.params
     try {
-        const canteenId = req.params.canteenId;
         const orders = await Order.find({ canteenId });
-        res.json(orders);
+        res.send({status:"ok" , data : orders})
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: "Internal server error" });
