@@ -21,16 +21,32 @@ const label = { inputProps: { "aria-label": "Color switch demo" } };
 
 function MenuItem({ menuItem }) {
   const [editForm, setEditForm] = useState(false);
-  const [id,setId] = useState("")
+  const [id, setId] = useState("");
+  const [stock, setStock] = useState(menuItem.available);
+
   const editItem = () => {
     setEditForm(true);
-    setId(menuItem._id)
+    setId(menuItem._id);
   };
-  const deleteItem = async ()=>{
-    await axios.delete(`http://localhost:5001/menu/delete/${menuItem._id}`).then((res)=>{
-      window.location.reload()
-    }).catch(err=>console.log(err))
-  }
+
+  const deleteItem = async () => {
+    await axios
+      .delete(`http://localhost:5001/menu/delete/${menuItem._id}`)
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleStock = async () => {
+    setStock(!stock);
+    try {
+      await axios.put(`http://localhost:5001/menu/availability/${menuItem._id}`, { available: !stock });
+    } catch (error) {
+      console.error("Error updating availability:", error);
+    }
+  };
+
   return (
     <>
       <div className="flex items-center justify-between p-2 border border-gray-200 max-h-20 min-h-20 lg:max-h-20 lg:min-h-20">
@@ -40,7 +56,11 @@ function MenuItem({ menuItem }) {
           <p className="text-black font-light">₹{menuItem.price}</p>
         </div>
         <div className="flex items-center">
-          <GreenSwitch {...label} defaultChecked />
+          <GreenSwitch
+            {...label}
+            defaultChecked={stock ? true : false}
+            onChange={handleStock}
+          />
         </div>
         <div className="flex items-center justify-evenly gap-5">
           <button
@@ -49,9 +69,10 @@ function MenuItem({ menuItem }) {
           >
             edit
           </button>
-          <button 
-          onClick={deleteItem}
-          className=" px-5 py-2 bg-green-900 text-white rounded-md hover:bg-white hover:text-black hover:border hover:border-black">
+          <button
+            onClick={deleteItem}
+            className=" px-5 py-2 bg-green-900 text-white rounded-md hover:bg-white hover:text-black hover:border hover:border-black"
+          >
             delete
           </button>
         </div>

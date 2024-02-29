@@ -75,8 +75,8 @@ exports.authStaff = async (req, res) => {
                 path: 'menu'
             }
         })
-        console.log("staff data", userData)
-        res.send({ status: "ok", data: userData });
+    console.log("staff data", userData)
+    res.send({ status: "ok", data: userData });
 }
 
 exports.logout = async (req, res) => {
@@ -156,7 +156,7 @@ exports.editMenuItem = async (req, res) => {
 
 //delete
 exports.deleteMenuItem = async (req, res) => {
-    const menuItemId = req.params.menuItemId; 
+    const menuItemId = req.params.menuItemId;
 
     try {
         const deletedMenuItem = await MenuItem.findByIdAndDelete(menuItemId);
@@ -171,6 +171,29 @@ exports.deleteMenuItem = async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 };
+
+exports.updateAvailability = async (req, res) => {
+    const menuItemId = req.params.menuItemId;
+    const { available } = req.body;
+
+    try {
+        const updatedMenuItem = await MenuItem.findByIdAndUpdate(
+            menuItemId,
+            { available },
+            { new: true }
+        );
+
+        if (!updatedMenuItem) {
+            return res.status(404).json({ message: 'Menu item not found' });
+        }
+
+        return res.status(200).json({ message: 'Menu item updated successfully', updatedMenuItem });
+    } catch (error) {
+        console.error("Error updating menu item:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+}
+
 exports.setCanteenOpenStatus = async (req, res) => {
     const { canteenId } = req.body;
     const { openStatus } = req.body;

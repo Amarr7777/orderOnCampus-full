@@ -33,7 +33,7 @@ function CanteenStaff() {
 
   return (
     <div>
-      {user ? (
+      {/* {user ? ( */}
         <div className="h-screen bg-gray-300 lg:fixed w-full">
           <Header />
           <div className="flex">
@@ -49,11 +49,11 @@ function CanteenStaff() {
             </Routes>
           </div>
         </div>
-      ) : (
-        <div className="flex flex-1 justify-center items-center h-screen">
-          <p className="text-xl font-green-900">please log in</p>
-        </div>
-      )}
+      {/* // ) : (
+      //   <div className="flex flex-1 justify-center items-center h-screen">
+      //     <p className="text-xl font-green-900">please log in</p>
+      //   </div>
+      // )} */}
     </div>
   );
 }

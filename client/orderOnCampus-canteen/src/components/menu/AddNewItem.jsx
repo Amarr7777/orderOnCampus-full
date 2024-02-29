@@ -36,6 +36,7 @@ function AddNewItem({ addNewForm, setAddNewForm }) {
   const handleSubmit = (e) => {
     if (!nameVerify || !priceVerify || !avialable) {
       alert("Fill all the mandatory fields");
+
     }
     e.preventDefault();
     const data = {
@@ -48,6 +49,7 @@ function AddNewItem({ addNewForm, setAddNewForm }) {
       .post(`http://localhost:5001/menu/add`, data)
       .then(() => {
         alert("Successfully added new item!");
+        window.location.reload()
         setAddNewForm(false);
         setNameVerify(false);
         setPriceVerify(false);
