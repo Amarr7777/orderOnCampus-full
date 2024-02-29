@@ -28,6 +28,8 @@ router.put('/menu/:dishId/stock', StaffController.updateMenuItemStock);
 router.post('/menu/add', StaffController.addMenuItem);
 // Edit a menu item
 router.put('/menu/:menuItemId', StaffController.editMenuItem);
+//delete item
+router.delete('/menu/delete/:menuItemId', StaffController.deleteMenuItem);
 // Set canteen open status
 router.put('/canteen/open', StaffController.setCanteenOpenStatus);
 // Get canteen orders

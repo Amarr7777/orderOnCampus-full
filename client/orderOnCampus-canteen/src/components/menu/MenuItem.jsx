@@ -3,6 +3,7 @@ import EditItemForm from "./EditItemForm";
 import { alpha, styled } from "@mui/material/styles";
 import { green } from "@mui/material/colors";
 import Switch from "@mui/material/Switch";
+import axios from "axios";
 
 const GreenSwitch = styled(Switch)(({ theme }) => ({
   "& .MuiSwitch-switchBase.Mui-checked": {
@@ -20,9 +21,16 @@ const label = { inputProps: { "aria-label": "Color switch demo" } };
 
 function MenuItem({ menuItem }) {
   const [editForm, setEditForm] = useState(false);
+  const [id,setId] = useState("")
   const editItem = () => {
     setEditForm(true);
+    setId(menuItem._id)
   };
+  const deleteItem = async ()=>{
+    await axios.delete(`http://localhost:5001/menu/delete/${menuItem._id}`).then((res)=>{
+      window.location.reload()
+    }).catch(err=>console.log(err))
+  }
   return (
     <>
       <div className="flex items-center justify-between p-2 border border-gray-200 max-h-20 min-h-20 lg:max-h-20 lg:min-h-20">
@@ -41,12 +49,14 @@ function MenuItem({ menuItem }) {
           >
             edit
           </button>
-          <button className=" px-5 py-2 bg-green-900 text-white rounded-md hover:bg-white hover:text-black hover:border hover:border-black">
+          <button 
+          onClick={deleteItem}
+          className=" px-5 py-2 bg-green-900 text-white rounded-md hover:bg-white hover:text-black hover:border hover:border-black">
             delete
           </button>
         </div>
       </div>
-      <EditItemForm editForm={editForm} setEditForm={setEditForm} />
+      <EditItemForm editForm={editForm} id={id} setEditForm={setEditForm} />
     </>
   );
 }

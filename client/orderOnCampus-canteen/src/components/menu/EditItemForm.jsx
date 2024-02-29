@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import axios from "axios";
-function EditItemForm({ editForm, setEditForm }) {
+function EditItemForm({ editForm, setEditForm , id}) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
@@ -32,7 +32,7 @@ function EditItemForm({ editForm, setEditForm }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     if (!nameVerify || !priceVerify || !avialable) {
       alert("Fill all the mandatory fields");
     }
@@ -43,19 +43,15 @@ function EditItemForm({ editForm, setEditForm }) {
       price,
       avialable,
     };
-    axios
-      .post("http://localhost:5001/menu/add", data)
-      .then(() => {
-        alert("Successfully edited the item!");
-        setEditForm(false);
-        setNameVerify(false);
-        setPriceVerify(false);
-      })
-      .catch((err) => {
+    await axios.put(`http://localhost:5001/menu/${id}`,data).then((res)=>{
+      setEditForm(false);
+      window.location.reload()
+    }).catch((err) => {
         console.error(err);
-        alert("Failed to add new item");
+        alert("Failed to edit new item");
       });
   };
+
   if (!editForm) return null;
   return (
     <div className="fixed w-full inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex items-center justify-center content-center z-50">

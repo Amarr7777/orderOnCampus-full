@@ -134,26 +134,43 @@ exports.editMenuItem = async (req, res) => {
     const menuItemId = req.params.menuItemId; // Get the _id of the menu item to be edited
     const { name, price, description, available } = req.body; // Get the updated properties from the request body
     console.log(menuItemId)
-    // try {
-    //     // Find the menu item by its _id and update its properties
-    //     const updatedMenuItem = await MenuItem.findByIdAndUpdate(
-    //         menuItemId,
-    //         { name, price, description, available },
-    //         { new: true } // Return the updated document
-    //     );
+    try {
+        // Find the menu item by its _id and update its properties
+        const updatedMenuItem = await MenuItem.findByIdAndUpdate(
+            menuItemId,
+            { name, price, description, available },
+            { new: true } // Return the updated document
+        );
 
-    //     // If the menu item is not found, return a 404 error
-    //     if (!updatedMenuItem) {
-    //         return res.status(404).json({ message: 'Menu item not found' });
-    //     }
+        // If the menu item is not found, return a 404 error
+        if (!updatedMenuItem) {
+            return res.status(404).json({ message: 'Menu item not found' });
+        }
 
-    //     return res.status(200).json({ message: 'Menu item updated successfully', updatedMenuItem });
-    // } catch (error) {
-    //     console.error("Error editing menu item:", error);
-    //     return res.status(500).json({ message: "Internal server error" });
-    // }
+        return res.status(200).json({ message: 'Menu item updated successfully', updatedMenuItem });
+    } catch (error) {
+        console.error("Error editing menu item:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
 };
 
+//delete
+exports.deleteMenuItem = async (req, res) => {
+    const menuItemId = req.params.menuItemId; 
+
+    try {
+        const deletedMenuItem = await MenuItem.findByIdAndDelete(menuItemId);
+
+        if (!deletedMenuItem) {
+            return res.status(404).json({ message: 'Menu item not found' });
+        }
+
+        return res.status(200).json({ message: 'Menu item deleted successfully' });
+    } catch (error) {
+        console.error("Error deleting menu item:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
 exports.setCanteenOpenStatus = async (req, res) => {
     const { canteenId } = req.body;
     const { openStatus } = req.body;
