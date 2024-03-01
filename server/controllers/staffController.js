@@ -75,7 +75,7 @@ exports.authStaff = async (req, res) => {
                 path: 'menu'
             }
         })
-    console.log("staff data", userData)
+    // console.log("staff data", userData)
     res.send({ status: "ok", data: userData });
 }
 

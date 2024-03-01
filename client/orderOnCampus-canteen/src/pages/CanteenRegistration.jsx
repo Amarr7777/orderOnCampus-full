@@ -52,7 +52,8 @@ function CanteenRegistration() {
       canteenDescription: canteenDescription,
       category: category,
       openingHours: true,
-      menu: []
+      menu: [],
+      orders: [],
     };
     axios
       .post("http://localhost:5001/canteens", restaurantData)

@@ -50,7 +50,7 @@ export default function OrderCard({ data }) {
                         </View>
                     </View>
                     <View>
-                        <Text className="text-green-900 text-md font-bold">{data.status}</Text>
+                        <Text className="text-green-900 text-md font-bold">₹ {data.totalPrice}</Text>
                     </View>
                 </View>
             </View>
@@ -60,10 +60,10 @@ export default function OrderCard({ data }) {
                 ))
             }
             <View className="p-5 flex-row space-x-2 items-end justify-end" >
-                <TouchableOpacity className="flex-row space-x-2 items-center p-2 rounded bg-green-900" >
+                <View className="flex-row space-x-2 items-center p-2 rounded bg-green-900" >
                     {/* <Icon.Sliders stroke='white' width={wp('4%')} /> */}
-                    <Text className="text-white" > ₹ {data.totalPrice}</Text>
-                </TouchableOpacity>
+                    <Text className="text-white" >{data.status}</Text>
+                </View>
             </View>
         </View>
     )

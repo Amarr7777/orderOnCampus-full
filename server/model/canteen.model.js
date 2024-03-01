@@ -7,6 +7,7 @@ const canteenSchema = new mongoose.Schema({
     category: { type: String, required: true },
     openStatus: {type:Boolean,default:true},
     menu: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MenuItem' , required: false}],
+    orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order', required: false }]
     // staff: { type: mongoose.Schema.Types.ObjectId, ref: 'Staff', required: true } // Reference to staff member who manages the canteen
 });
 

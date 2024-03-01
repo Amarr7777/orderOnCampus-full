@@ -13,7 +13,6 @@ router.post('/canteens', CanteenController.registerCanteen);
 router.get('/canteens/get-canteens',CanteenController.getAllCanteens)
 // Get canteen by id
 router.get('/canteens/:canteenID/get-canteen',CanteenController.getcanteenById)
-
 //get menu item by id
 router.get('/canteens/:itemId/get-item',CanteenController.getMenuById)
  
@@ -60,7 +59,8 @@ router.get('/users/:userId/favorites', UserController.getFavorites);
 router.get('/users/:userId/orders', UserController.getOrders);
 // Place order
 router.post('/users/place-order', UserController.placeOrder);
-
+// get user by id
+router.get('/users/:userId/get-user', UserController.getUserById)
 
 
 module.exports = router;

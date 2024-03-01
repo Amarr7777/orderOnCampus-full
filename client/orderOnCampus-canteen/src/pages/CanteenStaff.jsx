@@ -22,7 +22,7 @@ function CanteenStaff() {
       .then((res) => {
         setUser(res.data.data);
         dispatch(setUserData(res.data.data));
-        console.log(res.data.data)
+        // console.log(res.data.data)
       })
       .catch((err) => console.log(err));
   };

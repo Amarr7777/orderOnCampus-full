@@ -22,11 +22,15 @@ function MenuComponent() {
     setFilteredData(filteredResults);
   };
 
+  // const getMenuData = ()=>{
+
+  // }
+
   useEffect(() => {
     if (userData && userData.ownedCanteens && userData.ownedCanteens[0]) {
       setMenuItems(userData.ownedCanteens[0].menu);
     }
-  }, [userData]);
+  }, []);
 
   const addNewItem = () => {
     setAddNewForm(true);

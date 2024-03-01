@@ -47,7 +47,7 @@ exports.getAllCanteens = async (req, res) => {
 exports.getcanteenById = async (req, res) => {
     const {canteenID} = req.params
     try {
-        const canteen = await Canteen.findById(canteenID)
+        const canteen = await Canteen.findById(canteenID).populate('orders')
         res.send({ status: "ok", data: canteen })
     } catch (error) {
         console.error(error);

@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const io = require('socket.io')
 const User = require('../model/user.model');
 const Order = require('../model/order.model')
+const Canteen = require('../model/canteen.model');
 const secretKey = 'your_secret_key';
 
 // Register user
@@ -72,6 +73,21 @@ exports.getUser = async (req, res) => {
         return res.status(401).json({ msg: 'Auth failed' });
     }
 }
+//get user id
+exports.getUserById = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const userData = await User.findById(userId);
+        if (!userData) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        return res.status(200).json({ status: 'ok', data: userData });
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+}
+
 //add fav
 exports.addFavorites = async (req, res) => {
     const { userId, canteenId } = req.body;
@@ -152,6 +168,11 @@ exports.placeOrder = async (req, res) => {
         const savedOrder = await newOrder.save();
         await User.findByIdAndUpdate(
             user,
+            { $push: { orders: savedOrder._id } }, // Add the new order's ObjectId to the 'orders' array
+            { new: true } // Return the updated document
+        );
+        await Canteen.findByIdAndUpdate(
+            canteen,
             { $push: { orders: savedOrder._id } }, // Add the new order's ObjectId to the 'orders' array
             { new: true } // Return the updated document
         );

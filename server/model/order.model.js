@@ -5,7 +5,7 @@ const orderSchema = new mongoose.Schema({
     canteen: { type: mongoose.Schema.Types.ObjectId, ref: 'Canteen' },
     items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'MenuItem' }],
     totalPrice: { type: Number, required: true },
-    status: { type: String, enum: ['placed', 'processing', 'completed', 'cancelled'], default: 'placed' },
+    status: { type: String, enum: ['Placed', 'Processing', 'Completed', 'Cancelled', 'Ready'], default: 'Placed' },
     timestamp: { type: Date, default: Date.now }
 });
 
