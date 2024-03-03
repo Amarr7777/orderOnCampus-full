@@ -32,7 +32,7 @@ export default function FoodPrepScreen() {
             canteen: canteen._id,
             items: itemIds, 
             totalPrice: total,
-            status: 'placed' 
+            status: 'Placed' 
           };
         axios.post("http://0.0.0.0:5001/users/place-order",orderData).then(()=>{
             // alert('Your Order has been placed!')
