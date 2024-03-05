@@ -49,7 +49,7 @@ export default function CanteenScreen() {
         // console.log(res);
       }).catch(err => console.log(err))
     } else {
-      axios.delete(`http://localhost:5001/users/${userId}/favoriteCanteens/${item._id}`).then((res) => {
+      axios.delete(`http://0.0.0.0:5001/users/${userId}/favoriteCanteens/${item._id}`).then((res) => {
       alert("removed from favorite");
       // console.log(res);
     }).catch(err => console.log(err))

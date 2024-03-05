@@ -22,7 +22,7 @@ export default function PaymentScreen({ route }) {
         const data = {
             amount: orderTotal
         }
-        await axios.post("http://localhost:5001/payments", data).then(async (res) => {
+        await axios.post("http://0.0.0.0:5001/payments", data).then(async (res) => {
             console.log(res.data.paymentIntent);
             if (res.data.error) {
                 alert("Something went wrong")
@@ -44,8 +44,10 @@ export default function PaymentScreen({ route }) {
                     `Error Code: ${paymentResponse.error.message}`,
                     paymentResponse.error.message
                 )
-                navigation.navigate('FoodPrep');
+                
                 return;
+            }else{
+                navigation.navigate('FoodPrep');
             }
 
         }).catch((err) => { console.log(err) })

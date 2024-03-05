@@ -1,3 +1,4 @@
+// OrderComponent.js
 import React, { useEffect, useState } from "react";
 import OrderList from "./OrderList";
 import OrderDetails from "./OrderDetails";
@@ -57,7 +58,7 @@ function OrderComponent() {
             <button
               key={index}
               className="flex w-full"
-              onClick={() => handleOrderSelect(item)}
+              onClick={() => handleOrderSelect(item)} // Pass orderId to handleOrderSelect
             >
               <OrderList item={item} />
             </button>
@@ -68,7 +69,7 @@ function OrderComponent() {
         style={{ minHeight: "80vh", maxHeight: "80vh" }}
       >
         {selectedOrder !== null ? (
-          <OrderDetails order={selectedOrder} />
+          <OrderDetails order={selectedOrder} /> // Pass orderId to OrderDetails
         ) : (
           <div className="flex items-center justify-center content-center w-full h-full">
             <h4 className="font-semi text-gray-400 text-lg">

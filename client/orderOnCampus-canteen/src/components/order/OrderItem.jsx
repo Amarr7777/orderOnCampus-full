@@ -2,17 +2,19 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 function OrderItem({ item }) {
-  const [name,setName] =useState("")
-  const [price,setPrice] = useState("")
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+
   const getMenuItem = async () => {
-    await axios
-      .get(`http://localhost:5001/canteens/${item}/get-item`)
-      .then((res) => {
-        setName(res.data.data.name);
-        setPrice(res.data.data.price);
-      })
-      .catch((err) => console.error(err));
+    try {
+      const res = await axios.get(`http://localhost:5001/canteens/${item}/get-item`);
+      setName(res.data.data.name);
+      setPrice(res.data.data.price);
+    } catch (err) {
+      console.error(err);
+    }
   };
+
   useEffect(() => {
     getMenuItem();
   }, [item]);
