@@ -61,6 +61,7 @@ exports.getMenuById = async (req, res) => {
     console.log(itemId)
     try {
         const item = await MenuItem.findById(itemId)
+        console.log("MENU ITEM BY ID",item)
         res.send({ status: "ok", data: item })
     } catch (error) {
         console.error(error);

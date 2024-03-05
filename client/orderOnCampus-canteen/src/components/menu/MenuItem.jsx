@@ -19,7 +19,7 @@ const GreenSwitch = styled(Switch)(({ theme }) => ({
 
 const label = { inputProps: { "aria-label": "Color switch demo" } };
 
-function MenuItem({ menuItem }) {
+function MenuItem({ menuItem,handleDelete }) {
   const [editForm, setEditForm] = useState(false);
   const [id, setId] = useState("");
   const [stock, setStock] = useState(menuItem.available);
@@ -33,10 +33,14 @@ function MenuItem({ menuItem }) {
     await axios
       .delete(`http://localhost:5001/menu/delete/${menuItem._id}`)
       .then((res) => {
-        window.location.reload();
+        handleDelete()
       })
       .catch((err) => console.log(err));
   };
+
+  const editRerender = ()=>{
+    handleDelete()
+  }
 
   const handleStock = async () => {
     setStock(!stock);
@@ -77,7 +81,7 @@ function MenuItem({ menuItem }) {
           </button>
         </div>
       </div>
-      <EditItemForm editForm={editForm} id={id} setEditForm={setEditForm} />
+      <EditItemForm editRerender={editRerender} editForm={editForm} id={id} setEditForm={setEditForm} />
     </>
   );
 }

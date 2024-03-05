@@ -1,10 +1,10 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import axios from "axios";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function AddNewItem({ addNewForm, setAddNewForm }) {
+function AddNewItem({ addNewForm, setAddNewForm, triggerRender }) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
@@ -33,10 +33,10 @@ function AddNewItem({ addNewForm, setAddNewForm }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     if (!nameVerify || !priceVerify || !avialable) {
       alert("Fill all the mandatory fields");
-
+      return;
     }
     e.preventDefault();
     const data = {
@@ -45,19 +45,16 @@ function AddNewItem({ addNewForm, setAddNewForm }) {
       price,
       avialable,
     };
-    axios
-      .post(`http://localhost:5001/menu/add`, data)
-      .then(() => {
-        alert("Successfully added new item!");
-        window.location.reload()
-        setAddNewForm(false);
-        setNameVerify(false);
-        setPriceVerify(false);
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("Failed to add new item");
-      });
+    try {
+      await axios.post(`http://localhost:5001/menu/add`, data);
+      triggerRender();
+      setAddNewForm(false);
+      setNameVerify(false);
+      setPriceVerify(false);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to add new item");
+    }
   };
 
   if (!addNewForm) {

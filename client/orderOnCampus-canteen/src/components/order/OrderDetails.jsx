@@ -63,7 +63,7 @@ function OrderDetails({ order }) {
       </div>
       {/* buttons */}
       <div className="flex justify-evenly items-center p-5">
-        {orderStatus === "Placed" ? (
+        {order.status === "Placed" ? (
           <>
             <button
               onClick={handleCancel}

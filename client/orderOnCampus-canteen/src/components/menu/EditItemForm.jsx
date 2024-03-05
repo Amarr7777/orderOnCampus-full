@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import axios from "axios";
-function EditItemForm({ editForm, setEditForm , id}) {
+function EditItemForm({ editForm, setEditForm , id, editRerender}) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
@@ -45,7 +45,8 @@ function EditItemForm({ editForm, setEditForm , id}) {
     };
     await axios.put(`http://localhost:5001/menu/${id}`,data).then((res)=>{
       setEditForm(false);
-      window.location.reload()
+      // handleDelete()
+      editRerender()
     }).catch((err) => {
         console.error(err);
         alert("Failed to edit new item");

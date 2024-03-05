@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import MenuItem from "./MenuItem";
 import AddNewItem from "./AddNewItem";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUserData } from "../../slices/authSlice";
+import { selectUserData, setUserData } from "../../slices/authSlice";
+import axios from "axios";
 
 function MenuComponent() {
   const [addNewForm, setAddNewForm] = useState(false);
@@ -13,6 +14,19 @@ function MenuComponent() {
   const dispatch = useDispatch();
   const userData = useSelector(selectUserData);
 
+  // Function to trigger re-render
+  const triggerRender = useCallback(async() => {
+    await axios
+    .get("http://localhost:5001/staff/auth")
+    .then((res) => {
+      dispatch(setUserData(res.data.data));
+    })
+    .catch((err) => console.log(err));
+    if (userData && userData.ownedCanteens && userData.ownedCanteens[0]) {
+      setMenuItems(userData.ownedCanteens[0].menu);
+    }
+  }, [userData]);
+
   const handleSearch = (e) => {
     const searchTerm = e.target.value.toLowerCase();
     setSearchItem(searchTerm);
@@ -22,18 +36,17 @@ function MenuComponent() {
     setFilteredData(filteredResults);
   };
 
-  // const getMenuData = ()=>{
-
-  // }
-
   useEffect(() => {
-    if (userData && userData.ownedCanteens && userData.ownedCanteens[0]) {
-      setMenuItems(userData.ownedCanteens[0].menu);
-    }
-  }, []);
+    // Trigger initial render
+    triggerRender();
+  }, [triggerRender]); // Only run this effect once
 
   const addNewItem = () => {
     setAddNewForm(true);
+  };
+  const handleDelete = () => {
+    // Function to handle item deletion
+    triggerRender(); // Trigger re-render after item deletion
   };
 
   return (
@@ -59,16 +72,16 @@ function MenuComponent() {
         >
           {filteredData.length > 0 ? (
             filteredData.map((menuItem) => (
-              <MenuItem key={menuItem._id} menuItem={menuItem} />
+              <MenuItem key={menuItem._id} menuItem={menuItem} handleDelete={handleDelete} />
             ))
           ) : (
             menuItems.map((menuItem) => (
-              <MenuItem key={menuItem._id} menuItem={menuItem} />
+              <MenuItem key={menuItem._id} menuItem={menuItem} handleDelete={handleDelete} />
             ))
           )}
         </div>
       </div>
-      <AddNewItem addNewForm={addNewForm} setAddNewForm={setAddNewForm} />
+      <AddNewItem addNewForm={addNewForm} setAddNewForm={setAddNewForm} triggerRender={triggerRender} />
     </>
   );
 }
