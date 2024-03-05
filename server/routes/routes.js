@@ -4,6 +4,7 @@ const router = express.Router();
 const CanteenController = require('../controllers/canteenController')
 const StaffController = require('../controllers/staffController')
 const UserController = require('../controllers/userController')
+const PaymentController = require('../controllers/paymentController')
 const Auth = require('../middleware/auth')
 
 
@@ -61,6 +62,10 @@ router.get('/users/:userId/orders', UserController.getOrders);
 router.post('/users/place-order', UserController.placeOrder);
 // get user by id
 router.get('/users/:userId/get-user', UserController.getUserById)
+
+
+//payment
+router.post('/payments', PaymentController.paymentIntent)
 
 
 module.exports = router;

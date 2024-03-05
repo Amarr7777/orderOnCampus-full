@@ -17,6 +17,7 @@ app.use(cors({
 app.use(bodyParser.json());
 
 const routes = require('./routes/routes');
+// const paymentRoutes = require('./routes/payementRouter');
 
 // const bcrypt = require('bcryptjs')
 
@@ -30,6 +31,7 @@ mongoose.connect(mongoUrl).then(() => {
     }
 })
 app.use('/', routes);
+// app.use('/payments', paymentRoutes);
 // Socket.IO connection handling
 io.on('connection', (socket) => {
     console.log('A client connected');

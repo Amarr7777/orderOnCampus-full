@@ -4,34 +4,27 @@ import axios from "axios";
 
 function OrderDetails({ order }) {
   const [orderStatus, setOrderStatus] = useState(order.status);
-  const [orderId,setOrderID] = useState(order._id)
-  console.log("orderDetails", order._id);
+  const [orderId, setOrderId] = useState(order._id); // Corrected typo in state name
+
   const dateString = "2024-03-01T06:33:02.467Z";
   const date = new Date(dateString);
 
   const months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
   ];
 
-  const changeStatus = async()=>{
-    await axios.put(`http://localhost:5001/orders/${orderId}/status`,{status:orderStatus})
-    .catch((err)=>console.log(err))
-  }
-  
-  useEffect(()=>{
-    changeStatus()
-  },[orderStatus])
+  const changeStatus = async () => {
+    try {
+      await axios.put(`http://localhost:5001/orders/${orderId}/status`, { status: orderStatus });
+    } catch (error) {
+      console.log("Error updating order status:", error);
+    }
+  };
+
+  useEffect(() => {
+    changeStatus();
+  }, [orderId, orderStatus]); // Added orderId to the dependency array
 
   const handleCancel = () => {
     setOrderStatus("Cancelled");
@@ -51,13 +44,12 @@ function OrderDetails({ order }) {
   const year = date.getFullYear().toString().slice(-2);
 
   const formattedDate = `${day} ${months[monthIndex]} ${year}`;
-  console.log(formattedDate); // Output: 1 March 24
 
   return (
     <div className="flex flex-col">
       {/* order number */}
       <div className="flex items-center justify-between p-5 bg-gray-300">
-        <p className="text-green-900">#{order._id}</p>
+        <p className="text-green-900">#{orderId}</p> {/* Updated to display orderId */}
         <p className="text-gray-500 font-light">{formattedDate}</p>
         <p className="text-gray-500 font-light">
           {order.items.length} items for {order.totalPrice}
