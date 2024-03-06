@@ -5,10 +5,12 @@ import CanteenCard from './CanteenCard';
 import * as Icon from "react-native-feather";
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import axios from 'axios';
+import { useCallback } from 'react';
 
 
 export default function CanteenSlide({ activeCategory, filteredData }) {
   const [allCanteens, setAllCanteens] = useState([])
+  const [renderCount, setRenderCount] = useState(0);
   const windowHeight = Dimensions.get('window').height;
   
   const allCategory = allCanteens.filter(canteen => canteen.categories && canteen.categories.includes('all'));
@@ -16,17 +18,19 @@ export default function CanteenSlide({ activeCategory, filteredData }) {
   const lunch = allCanteens.filter(canteen => canteen.categories && canteen.categories.includes('lunch'));
   const snacks = allCanteens.filter(canteen => canteen.categories && canteen.categories.includes('snacks'));
 
-  const getCanteens = async () => {
+  const getCanteens = useCallback(async () => {
     await axios.get('http://0.0.0.0:5001/canteens/get-canteens')
       .then((res) => {
         setAllCanteens(res.data.data);
         console.log(allCanteens)
+        setRenderCount(renderCount + 1);
       })
       .catch(err => console.log(err))
-  }
+  },[])
+
   useEffect(() => {
-    getCanteens()
-  }, [])
+    getCanteens();
+  }); 
   
   let renderedCategory;
   let Category;
@@ -59,9 +63,9 @@ export default function CanteenSlide({ activeCategory, filteredData }) {
       )
     })
   } else {
-    if (filteredData.length > 0) {
+    if (allCanteens.length > 0) {
       Category = "Campus Canteens"
-      renderedCategory = [filteredData].map((canteen, index) => {
+      renderedCategory = [allCanteens].map((canteen, index) => {
         return (
           <CanteenCard key={index} canteen={canteen} />
         )

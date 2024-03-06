@@ -10,7 +10,6 @@ import { selectCanteen, setCanteen } from '../slices/canteenSlice';
 import CartIcon from '../components/CartIcon';
 import { selectToken } from '../slices/AuthSlice';
 import axios from 'axios'
-import { emptyCart } from '../slices/CartSlice';
 export default function CanteenScreen() {
   const navigation = useNavigation()
   const { params } = useRoute();
