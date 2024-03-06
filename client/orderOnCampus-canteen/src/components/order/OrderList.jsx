@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-function OrderList({ item }) {
-  console.log("oredr list", item.status);
+function OrderList({ item, getOrder }) {
+  console.log("oredr list", item);
   const [userId, setUserID] = useState("");
   const [user, setUser] = useState("");
   const timestamp = item.timestamp;
@@ -12,7 +12,7 @@ function OrderList({ item }) {
 
   // Extract date components
   const year = date.getFullYear();
-  const month = date.getMonth() + 1; // Month is zero-based, so we add 1
+  const month = date.getMonth() + 1; 
   const day = date.getDate();
 
   // Extract time components
@@ -20,13 +20,14 @@ function OrderList({ item }) {
   const minutes = date.getMinutes();
   const seconds = date.getSeconds();
 
-  console.log(item);
+  console.log("ORDER LIST",item);
   const getData = async () => {
     try {
       const res = await axios.get(
         `http://localhost:5001/users/${userId}/get-user`
       );
       setUser(res.data.data.name);
+      getOrder()
     } catch (err) {
       console.error(err);
     }
@@ -51,7 +52,7 @@ function OrderList({ item }) {
         <h6 className="text-green-900">{item.status.toUpperCase()}</h6>
       </div>
       <h6 className="text-green-900 font-semibold">
-        {hours}:{minutes > 10 ? `${minutes}` : `0${minutes}`}
+        {hours}:{minutes >= 10 ? `${minutes}` : `0${minutes}`}
       </h6>
       <p className="text-sm font-light">
         {item.items.length} items for ₹{item.totalPrice}

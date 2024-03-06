@@ -42,6 +42,8 @@ router.put('/canteen/open', StaffController.setCanteenOpenStatus);
 router.get('/canteen/:canteenId/orders', StaffController.getCanteenOrders);
 // Update order status
 router.put('/orders/:orderId/status', StaffController.updateOrderStatus);
+// get order by id
+router.get('/orders/:orderId/get-order', StaffController.getOrderByOrderId);
 
 
 // Register user

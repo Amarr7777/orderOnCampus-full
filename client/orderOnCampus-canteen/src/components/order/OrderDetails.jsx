@@ -3,20 +3,48 @@ import OrderItem from "./OrderItem";
 import axios from "axios";
 
 function OrderDetails({ order }) {
+  console.log("ORDER", order);
   const [orderStatus, setOrderStatus] = useState(order.status);
-  const [orderId, setOrderId] = useState(order._id); // Corrected typo in state name
+  // const [orderId, setOrderId] = useState(order);
 
-  const dateString = "2024-03-01T06:33:02.467Z";
+  const dateString = order.timestamp;
   const date = new Date(dateString);
 
   const months = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
+
+  // const getOrder = async() => {
+  //   try {
+  //     await axios
+  //       .get(`http://localhost:5001/orders/${orderId}/get-order`)
+  //       .then((res) => {
+  //         console.log("RESPONSE", res.data.data);
+  //       })
+  //       .catch((err) => {
+  //         console.log("Error getting the order", err);
+  //       });
+  //   } catch (error) {
+  //     console.log("Error updating order status:", error);
+  //   }
+  // };
 
   const changeStatus = async () => {
     try {
-      await axios.put(`http://localhost:5001/orders/${orderId}/status`, { status: orderStatus });
+      await axios.put(`http://localhost:5001/orders/${order._id}/status`, {
+        status: orderStatus,
+      }).then(()=>{triggerRender()})
     } catch (error) {
       console.log("Error updating order status:", error);
     }
@@ -24,19 +52,23 @@ function OrderDetails({ order }) {
 
   useEffect(() => {
     changeStatus();
-  }, [orderId, orderStatus]); // Added orderId to the dependency array
+  }, [orderStatus]);
 
   const handleCancel = () => {
     setOrderStatus("Cancelled");
+    // triggerRender();
   };
   const handleProcessing = () => {
     setOrderStatus("Processing");
+    // triggerRender();
   };
   const handleReady = () => {
     setOrderStatus("Ready");
+    // triggerRender();
   };
   const handleDelivered = () => {
     setOrderStatus("Completed");
+    // triggerRender();
   };
 
   const day = date.getDate();
@@ -49,7 +81,7 @@ function OrderDetails({ order }) {
     <div className="flex flex-col">
       {/* order number */}
       <div className="flex items-center justify-between p-5 bg-gray-300">
-        <p className="text-green-900">#{orderId}</p> {/* Updated to display orderId */}
+        <p className="text-green-900">#{order._id}</p>
         <p className="text-gray-500 font-light">{formattedDate}</p>
         <p className="text-gray-500 font-light">
           {order.items.length} items for {order.totalPrice}

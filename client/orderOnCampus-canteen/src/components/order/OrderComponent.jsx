@@ -1,46 +1,57 @@
-// OrderComponent.js
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import OrderList from "./OrderList";
 import OrderDetails from "./OrderDetails";
-import { useSelector } from "react-redux";
-import { selectUserData } from "../../slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserData, setUserData } from "../../slices/authSlice";
 import axios from "axios";
+import { setCanteen } from "../../slices/canteenSlice";
 
 function OrderComponent() {
   const [canteenID, setCanteenId] = useState("");
   const [orders, setOrders] = useState([]);
-  const userData = useSelector(selectUserData);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
-  const getOrder = async () => {
+  const dispatch = useDispatch();
+  const userData = useSelector(selectUserData);
+  console.log(userData);
+
+  // Function to trigger re-render
+  const triggerRender = useCallback(async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:5001/canteens/${canteenID}/get-canteen`
-      );
-      setOrders(res.data.data.orders);
+      const res = await axios.get("http://localhost:5001/staff/auth");
+      dispatch(setUserData(res.data.data));
     } catch (err) {
       console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    if (userData && userData.ownedCanteens.length > 0) {
-      setCanteenId(userData.ownedCanteens[0]._id);
     }
   }, [userData]);
 
   useEffect(() => {
-    if (canteenID) {
-      getOrder();
+    // Trigger initial render
+    triggerRender();
+  }, [userData]); // Only run this effect once
+
+  useEffect(() => {
+    getOrder();
+  }, [userData]);
+
+  const getOrder = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5001/canteens/${userData.ownedCanteens[0]._id}/get-canteen`
+      );
+      setOrders(res.data.data.orders);
+    } catch (err) {
+      console.log(err);
+      alert("Error");
     }
-  }, [canteenID]);
+  };
 
   const handleOrderSelect = (order) => {
     setSelectedOrder(order);
   };
 
   return (
-    <div className="grid grid-cols-1 w-full gap-4 p-5 m-x-20 lg:grid-cols-3 lg:gap-8 ">
+    <div className="grid grid-cols-1 w-full gap-4 p-5 m-x-20 lg:grid-cols-3 lg:gap-8">
       <div
         className="lg:h-96 w-full overflow-scroll rounded-lg bg-white p-5"
         style={{ minHeight: "80vh", maxHeight: "80vh" }}
@@ -50,7 +61,8 @@ function OrderComponent() {
         </p>
         {orders
           .filter(
-            (item) => item.status !== "Completed" && item.status !== "Cancelled"
+            (item) =>
+              item.status !== "Completed" && item.status !== "Cancelled"
           )
           .slice()
           .reverse()
@@ -58,7 +70,7 @@ function OrderComponent() {
             <button
               key={index}
               className="flex w-full"
-              onClick={() => handleOrderSelect(item)} // Pass orderId to handleOrderSelect
+              onClick={() => handleOrderSelect(item)}
             >
               <OrderList item={item} />
             </button>
@@ -69,7 +81,10 @@ function OrderComponent() {
         style={{ minHeight: "80vh", maxHeight: "80vh" }}
       >
         {selectedOrder !== null ? (
-          <OrderDetails order={selectedOrder} /> // Pass orderId to OrderDetails
+          <OrderDetails
+            order={selectedOrder}
+            triggerRender = {triggerRender}
+          />
         ) : (
           <div className="flex items-center justify-center content-center w-full h-full">
             <h4 className="font-semi text-gray-400 text-lg">
