@@ -1,42 +1,41 @@
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { Component, useEffect, useState } from 'react'
+import React, { Component, useCallback, useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { useNavigation } from '@react-navigation/native'
 import Categories from '../components/Categories';
 import * as Icon from "react-native-feather";
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios';
-import { setToken } from '../slices/AuthSlice';
-import { useDispatch } from 'react-redux';
+import { selectToken, setToken } from '../slices/AuthSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import io from 'socket.io-client';
 const socket = io('http://localhost:5001');
 
 
 
 export default function HomeScreen() {
-    const dispatch = useDispatch()
-    const[name,setName] = useState("")
-    const getData = async()=>{
-        const token = await AsyncStorage.getItem("token")
-        axios.post("http://0.0.0.0:5001/users/get-user",{token}).then((res) => {
-            setName(res.data.data.name)
-            // dispatch(setToken({ name: res.data.data.name, email: res.data.data.email, _id: res.data.data._id }));
-            dispatch(setToken({ data: res.data.data }));
-        }).catch((err) => console.error(err))
-    }
-    const navigation = useNavigation();
-    useEffect(() => {
-        
-        getData();
-        socket.on('userDataUpdated', (userData) => {
-            console.log('Received user data:', userData);
-            // setName(userData.name);
-        });
+    const dispatch = useDispatch();
+  const [name, setName] = useState("");
+  const userData = useSelector(selectToken);
+  const navigation = useNavigation();
 
-        return () => {
-            socket.off('userDataUpdated');
-        };
-    }, [])
+  // Function to trigger re-render
+  const triggerRender = useCallback
+  (async () => {
+    try {
+      const token = await AsyncStorage.getItem("token");
+      const res = await axios.post("http://0.0.0.0:5001/users/get-user", { token });
+      setName(res.data.data.name);
+      dispatch(setToken({ data: res.data.data }));
+    } catch (error) {
+      console.error(error);
+    }
+  }, [userData]);
+
+  useEffect(() => {
+    // Trigger initial render
+    triggerRender();
+  }, [triggerRender]);
     
     return (
         <SafeAreaView style={styles.container}>

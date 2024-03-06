@@ -42,7 +42,7 @@ function OrderComponent() {
       setOrders(res.data.data.orders);
     } catch (err) {
       console.log(err);
-      alert("Error");
+      // alert("Error");
     }
   };
 

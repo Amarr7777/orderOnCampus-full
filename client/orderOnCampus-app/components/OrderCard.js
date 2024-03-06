@@ -5,12 +5,16 @@ import * as Icon from "react-native-feather";
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import OrderItems from './OrderItems';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectToken } from '../slices/AuthSlice';
 
 export default function OrderCard({ data }) {
     console.log("order Card", data)
     const [canteenName, setCanteenName] = useState("")
     const [canteenLoc, setCanteenLoc] = useState("")
     const [commonItems, setCommonItems] = useState([])
+    const dispatch = useDispatch();
+    const userData = useSelector(selectToken);
 
     const getData = async () => {
         await axios.get(`http://0.0.0.0:5001/canteens/${data.canteen}/get-canteen`).then((res) => {
@@ -29,7 +33,7 @@ export default function OrderCard({ data }) {
     }
     useEffect(() => {
         getData();
-    }, [])
+    }, [userData])
 
     const navigation = useNavigation();
     return (
