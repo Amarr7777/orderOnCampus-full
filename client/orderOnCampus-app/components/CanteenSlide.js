@@ -64,12 +64,21 @@ export default function CanteenSlide({ activeCategory, filteredData }) {
     })
   } else {
     if (allCanteens.length > 0) {
-      Category = "Campus Canteens"
-      renderedCategory = [allCanteens].map((canteen, index) => {
-        return (
-          <CanteenCard key={index} canteen={canteen} />
-        )
-      })
+      if(filteredData.length > 0){
+        Category = "Campus Canteens"
+        renderedCategory = [filteredData].map((canteen, index) => {
+          return (
+            <CanteenCard key={index} canteen={canteen} />
+          )
+        })
+      }else{
+        Category = "Campus Canteens"
+        renderedCategory = [allCanteens].map((canteen, index) => {
+          return (
+            <CanteenCard key={index} canteen={canteen} />
+          )
+        })
+      }
     } else {
       Category = "Campus Canteens"
       renderedCategory = (

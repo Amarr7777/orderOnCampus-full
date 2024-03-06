@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, TextInput } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { categories } from '../constants'
 import CanteenSlide from './CanteenSlide';
 import * as Icon from "react-native-feather";
@@ -10,20 +10,22 @@ export default function Categories() {
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredData, setFilteredData] = useState([]);
 
-    const getCanteens = async () => {
+    const getCanteens = useCallback(async () => {
         await axios.get('http://0.0.0.0:5001/canteens/get-canteens')
           .then((res) => {
             setAllCanteens(res.data.data);
-            setFilteredData(res.data.data)
+            // setFilteredData(res.data.data)
           })
           .catch(err => console.log(err))
-      }
+      })
       useEffect(() => {
-        getCanteens()
-      }, [])
+        // if(filteredData.length <= 0){
+            getCanteens()
+        // }
+      })
 
     const handleSearch = (query) => {
-        setActiveCategory(0)
+        setActiveCategory(1)
         setSearchQuery(query);
         const filteredResults = allCanteens.filter(item =>
             item.name.toLowerCase().includes(query.toLowerCase())
