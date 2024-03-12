@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView, TouchableOpacity, Image, TouchableNativeFeedback, TouchableWithoutFeedback, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { heightPercentageToDP as hp, widthPercentageToDP, widthPercentageToDP as wp } from 'react-native-responsive-screen'
+  import { heightPercentageToDP as hp, widthPercentageToDP, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import { useNavigation } from '@react-navigation/native';
 import * as Icon from "react-native-feather";
 import AsyncStorage from '@react-native-async-storage/async-storage'

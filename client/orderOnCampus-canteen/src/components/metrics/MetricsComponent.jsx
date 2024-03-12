@@ -1,4 +1,6 @@
 import React from "react";
+import OrderSummary from "./OrderSummary";
+import OrderStats from "./OrderStats";
 
 function MetricsComponent() {
   return (
@@ -33,11 +35,13 @@ function MetricsComponent() {
         </div>
       </div>
       <div className="grid w-full gap-4 lg:grid-cols-2 lg:gap-5">
-        <div className="h-96 w-full rounded-lg bg-white">
+        <div className="flex flex-col h-96 w-full rounded-lg bg-white">
           <p className="p-5 font-bold text-green-900">Order Summary</p>
+          <OrderSummary />
         </div>
-        <div className="h-96 w-full rounded-lg bg-white">
+        <div className="flex flex-col h-fit w-full rounded-lg bg-white">
           <p className="p-5 font-bold text-green-900">Order Statistic</p>
+          <OrderStats/>
         </div>
       </div>
     </div>

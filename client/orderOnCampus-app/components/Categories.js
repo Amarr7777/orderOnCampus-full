@@ -67,7 +67,7 @@ export default function Categories() {
                     })
                 }
             </View>
-            <CanteenSlide  filteredData={filteredData} />
+            <CanteenSlide   filteredData={filteredData} />
         </>
     )
 }

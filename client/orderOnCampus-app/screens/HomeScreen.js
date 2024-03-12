@@ -1,7 +1,7 @@
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { Component, useCallback, useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import Categories from '../components/Categories';
 import * as Icon from "react-native-feather";
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -20,8 +20,10 @@ export default function HomeScreen() {
   const navigation = useNavigation();
 
   // Function to trigger re-render
-  const triggerRender = useCallback
-  (async () => {
+  const triggerRender = 
+  useCallback
+  (
+    async () => {
     try {
       const token = await AsyncStorage.getItem("token");
       const res = await axios.post("http://0.0.0.0:5001/users/get-user", { token });
@@ -30,12 +32,14 @@ export default function HomeScreen() {
     } catch (error) {
       console.error(error);
     }
-  }, [userData]);
+  }, []);
 
   useEffect(() => {
     // Trigger initial render
     triggerRender();
-  }, [triggerRender]);
+  }, []);
+
+  
     
     return (
         <SafeAreaView style={styles.container}>
