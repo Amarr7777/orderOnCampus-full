@@ -47,7 +47,7 @@ function AddNewItem({ addNewForm, setAddNewForm, triggerRender }) {
     };
     try {
       await axios.post(`http://localhost:5001/menu/add`, data);
-      triggerRender();
+      // triggerRender();
       setAddNewForm(false);
       setNameVerify(false);
       setPriceVerify(false);
@@ -55,6 +55,7 @@ function AddNewItem({ addNewForm, setAddNewForm, triggerRender }) {
       console.error(err);
       alert("Failed to add new item");
     }
+    triggerRender();
   };
 
   if (!addNewForm) {

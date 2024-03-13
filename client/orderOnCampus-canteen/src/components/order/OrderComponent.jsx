@@ -23,15 +23,17 @@ function OrderComponent() {
     } catch (err) {
       console.log(err);
     }
-  }, [userData]);
+  }, [dispatch]);
 
   useEffect(() => {
     // Trigger initial render
     triggerRender();
-  }, [userData]); // Only run this effect once
+  }, [triggerRender]);
 
   useEffect(() => {
-    getOrder();
+    if (userData) {
+      getOrder();
+    }
   }, [userData]);
 
   const getOrder = async () => {
@@ -81,10 +83,7 @@ function OrderComponent() {
         style={{ minHeight: "80vh", maxHeight: "80vh" }}
       >
         {selectedOrder !== null ? (
-          <OrderDetails
-            order={selectedOrder}
-            triggerRender = {triggerRender}
-          />
+          <OrderDetails order={selectedOrder} triggerRender={triggerRender} />
         ) : (
           <div className="flex items-center justify-center content-center w-full h-full">
             <h4 className="font-semi text-gray-400 text-lg">

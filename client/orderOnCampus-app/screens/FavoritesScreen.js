@@ -27,7 +27,7 @@ export default function FavoritesScreen() {
     console.log(token.data.favoriteCanteens);
     console.log('====================================');
     // getData()
-  }, [favoriteCanteens])
+  }, [token])
 
   // console.log("fav screen",token.data.favoriteCanteens)
   return (

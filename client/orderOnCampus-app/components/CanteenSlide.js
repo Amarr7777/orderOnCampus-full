@@ -22,7 +22,7 @@ export default function CanteenSlide({ activeCategory, filteredData }) {
     await axios.get('http://0.0.0.0:5001/canteens/get-canteens')
       .then((res) => {
         setAllCanteens(res.data.data);
-        console.log(allCanteens)
+        console.log("CANTEEN SLIDE",allCanteens)
         setRenderCount(renderCount + 1);
       })
       .catch(err => console.log(err))
@@ -30,7 +30,11 @@ export default function CanteenSlide({ activeCategory, filteredData }) {
 
   useEffect(() => {
     getCanteens();
-  }); 
+    const intervalId = setInterval(() => {
+      getCanteens();
+    }, 20000);
+    return () => clearInterval(intervalId);
+  },[]); 
   
   let renderedCategory;
   let Category;

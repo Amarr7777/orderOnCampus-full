@@ -1,8 +1,8 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen'
 import * as Icon from "react-native-feather";
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import OrderItems from './OrderItems';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,9 +31,18 @@ export default function OrderCard({ data }) {
             setCommonItems(common.map(item => ({ id: item, count: itemCounts[item] })));
         }).catch((err) => { console.log('Error', err) })
     }
+
     useEffect(() => {
         getData();
-    }, [userData])
+      },[]); 
+
+    useFocusEffect(
+        useCallback(() => {
+            // Trigger re-render when the screen gains focus
+            getData();
+            
+        }, [])
+    );
 
     const navigation = useNavigation();
     return (

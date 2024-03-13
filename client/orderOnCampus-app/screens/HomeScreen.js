@@ -29,6 +29,7 @@ export default function HomeScreen() {
       const res = await axios.post("http://0.0.0.0:5001/users/get-user", { token });
       setName(res.data.data.name);
       dispatch(setToken({ data: res.data.data }));
+      console.log("RE-RENDERED HOME SCREEN");
     } catch (error) {
       console.error(error);
     }
@@ -39,6 +40,13 @@ export default function HomeScreen() {
     triggerRender();
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+        // Trigger re-render when the screen gains focus
+        triggerRender();
+        
+    }, [])
+);
   
     
     return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import EditItemForm from "./EditItemForm";
 import { alpha, styled } from "@mui/material/styles";
 import { green } from "@mui/material/colors";
@@ -19,7 +19,7 @@ const GreenSwitch = styled(Switch)(({ theme }) => ({
 
 const label = { inputProps: { "aria-label": "Color switch demo" } };
 
-function MenuItem({ menuItem,handleDelete }) {
+function MenuItem({ menuItem, handleDelete }) {
   const [editForm, setEditForm] = useState(false);
   const [id, setId] = useState("");
   const [stock, setStock] = useState(menuItem.available);
@@ -30,17 +30,17 @@ function MenuItem({ menuItem,handleDelete }) {
   };
 
   const deleteItem = async () => {
-    await axios
-      .delete(`http://localhost:5001/menu/delete/${menuItem._id}`)
-      .then((res) => {
-        handleDelete()
-      })
-      .catch((err) => console.log(err));
+    try {
+      await axios.delete(`http://localhost:5001/menu/delete/${menuItem._id}`);
+      handleDelete();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  const editRerender = ()=>{
-    handleDelete()
-  }
+  const editRerender = useCallback(() => {
+    handleDelete();
+  }, [handleDelete]);
 
   const handleStock = async () => {
     setStock(!stock);
@@ -62,20 +62,20 @@ function MenuItem({ menuItem,handleDelete }) {
         <div className="flex items-center">
           <GreenSwitch
             {...label}
-            defaultChecked={stock ? true : false}
+            defaultChecked={stock}
             onChange={handleStock}
           />
         </div>
         <div className="flex items-center justify-evenly gap-5">
           <button
             onClick={editItem}
-            className=" px-5 py-2 bg-green-900 text-white rounded-md hover:bg-white hover:text-black hover:border hover:border-black"
+            className="px-5 py-2 bg-green-900 text-white rounded-md hover:bg-white hover:text-black hover:border hover:border-black"
           >
             edit
           </button>
           <button
             onClick={deleteItem}
-            className=" px-5 py-2 bg-green-900 text-white rounded-md hover:bg-white hover:text-black hover:border hover:border-black"
+            className="px-5 py-2 bg-green-900 text-white rounded-md hover:bg-white hover:text-black hover:border hover:border-black"
           >
             delete
           </button>

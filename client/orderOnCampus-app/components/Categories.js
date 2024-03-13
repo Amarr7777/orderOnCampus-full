@@ -22,7 +22,7 @@ export default function Categories() {
         // if(filteredData.length <= 0){
             getCanteens()
         // }
-      })
+      },[])
 
     const handleSearch = (query) => {
         setActiveCategory(1)
