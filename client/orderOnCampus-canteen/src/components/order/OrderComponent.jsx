@@ -13,9 +13,7 @@ function OrderComponent() {
 
   const dispatch = useDispatch();
   const userData = useSelector(selectUserData);
-  console.log(userData);
 
-  // Function to trigger re-render
   const triggerRender = useCallback(async () => {
     try {
       const res = await axios.get("http://localhost:5001/staff/auth");
@@ -26,31 +24,41 @@ function OrderComponent() {
   }, [dispatch]);
 
   useEffect(() => {
-    // Trigger initial render
     triggerRender();
   }, [triggerRender]);
 
   useEffect(() => {
-    if (userData) {
-      getOrder();
+    if (userData && userData.ownedCanteens) {
+      const getCanteenOrders = async () => {
+        try {
+          const res = await axios.get(
+            `http://localhost:5001/canteens/${userData.ownedCanteens[0]._id}/get-canteen`
+          );
+          setOrders(res.data.data.orders);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+
+      getCanteenOrders();
     }
   }, [userData]);
 
-  const getOrder = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:5001/canteens/${userData.ownedCanteens[0]._id}/get-canteen`
-      );
-      setOrders(res.data.data.orders);
-    } catch (err) {
-      console.log(err);
-      // alert("Error");
-    }
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      triggerRender();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleOrderSelect = (order) => {
     setSelectedOrder(order);
   };
+
+  const filteredOrders = orders.filter(
+    (item) => item.status !== "Completed" && item.status !== "Cancelled"
+  );
 
   return (
     <div className="grid grid-cols-1 w-full gap-4 p-5 m-x-20 lg:grid-cols-3 lg:gap-8">
@@ -61,22 +69,15 @@ function OrderComponent() {
         <p className="text-center text-gray-500 p-5">
           Select an order to view its details
         </p>
-        {orders
-          .filter(
-            (item) =>
-              item.status !== "Completed" && item.status !== "Cancelled"
-          )
-          .slice()
-          .reverse()
-          .map((item, index) => (
-            <button
-              key={index}
-              className="flex w-full"
-              onClick={() => handleOrderSelect(item)}
-            >
-              <OrderList item={item} />
-            </button>
-          ))}
+        {filteredOrders.reverse().map((item, index) => (
+          <button
+            key={index}
+            className="flex w-full"
+            onClick={() => handleOrderSelect(item)}
+          >
+            <OrderList item={item} />
+          </button>
+        ))}
       </div>
       <div
         className="lg:h-96 w-full rounded-lg bg-white overflow-y-scroll lg:col-span-2 p-5"
