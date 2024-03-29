@@ -1,17 +1,43 @@
 import { Chart as ChartJS, ArcElement, Legend, Tooltip } from "chart.js";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
+import axios from "axios";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
-function OrderSummary() {
+function OrderSummary({ userData }) {
+  const [mostOrderedItems, setMostOrderedItems] = useState([]);
+
+  useEffect(() => {
+    // Fetch most ordered items data from the backend
+    const fetchMostOrderedItems = async () => {
+      if (
+        userData &&
+        userData.ownedCanteens &&
+        userData.ownedCanteens.length > 0
+      ) {
+        try {
+          const canteenId = userData.ownedCanteens[0]._id;
+          const response = await axios.get(
+            `http://localhost:5001/most-ordered-item/${canteenId}`
+          ); 
+          setMostOrderedItems(response.data.data);
+          console.log("LET ME SEE THE DATA", response.data.data);
+        } catch (error) {
+          console.error("Error fetching most ordered items:", error);
+        }
+      }
+    };
+
+    fetchMostOrderedItems();
+  }, []);
   // Dummy data for the most ordered items in the menu
-  const mostOrderedItems = [
-    { name: "Item A", quantity: 50 },
-    { name: "Item B", quantity: 30 },
-    { name: "Item C", quantity: 20 },
-    { name: "Item D", quantity: 15 },
-    { name: "Item E", quantity: 10 },
-  ];
+  // const mostOrderedItems = [
+  //   { name: "Item A", quantity: 50 },
+  //   { name: "Item B", quantity: 30 },
+  //   { name: "Item C", quantity: 20 },
+  //   { name: "Item D", quantity: 15 },
+  //   { name: "Item E", quantity: 10 },
+  // ];
 
   // Extracting labels and data from the dummy data
   const labels = mostOrderedItems.map((item) => item.name);

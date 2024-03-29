@@ -165,6 +165,12 @@ exports.deleteMenuItem = async (req, res) => {
             return res.status(404).json({ message: 'Menu item not found' });
         }
 
+        // Find all canteens that include this menu item and remove it from their menu array
+        await Canteen.updateMany(
+            { menu: menuItemId },
+            { $pull: { menu: menuItemId } }
+        );
+
         return res.status(200).json({ message: 'Menu item deleted successfully' });
     } catch (error) {
         console.error("Error deleting menu item:", error);
@@ -263,3 +269,51 @@ exports.getOrderByOrderId = async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
     }
 }
+
+//unique customer
+
+exports.uniqueCustomer = async (req, res) => {
+    try {
+      const canteenId = req.params.canteenId;
+      const uniqueCustomers = await Order.distinct('user', { canteen: canteenId });
+      const uniqueCustomerCount = uniqueCustomers.length;
+      res.json({ success: true, count: uniqueCustomerCount });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+  }
+
+  //most ordered item
+  exports.mostOrderedItems = async (req, res) => {
+    try {
+      const canteenId = req.params.canteenId;
+      const orders = await Order.find({ canteen: canteenId });
+      const itemCounts = new Map();
+  
+      orders.forEach((order) => {
+        order.items.forEach((item) => {
+          const itemId = item.toString();
+          itemCounts.set(itemId, (itemCounts.get(itemId) || 0) + 1);
+        });
+      });
+  
+      // Sort the items by count in descending order
+      const sortedItems = [...itemCounts.entries()].sort((a, b) => b[1] - a[1]);
+  
+      // Get the top 5 most ordered items
+      const topItems = sortedItems.slice(0, 5);
+  
+      // Map the item IDs to their names and create the response data
+      const response = await Promise.all(topItems.map(async ([itemId, count]) => {
+        const menuItem = await MenuItem.findById(itemId);
+        const itemName = menuItem ? menuItem.name : "Unknown Item";
+        return { name: itemName, quantity: count };
+      }));
+  
+      res.status(200).json({ status: 'ok', data: response });
+    } catch (error) {
+      console.error("Error finding most ordered items:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  };

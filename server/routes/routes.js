@@ -44,7 +44,10 @@ router.get('/canteen/:canteenId/orders', StaffController.getCanteenOrders);
 router.put('/orders/:orderId/status', StaffController.updateOrderStatus);
 // get order by id
 router.get('/orders/:orderId/get-order', StaffController.getOrderByOrderId);
-
+//unique customer
+router.get('/canteens/:canteenId/unique-customers',StaffController.uniqueCustomer)
+//most ordered items
+router.get("/most-ordered-item/:canteenId",StaffController.mostOrderedItems)
 
 // Register user
 router.post('/users/register', UserController.registerUser);
