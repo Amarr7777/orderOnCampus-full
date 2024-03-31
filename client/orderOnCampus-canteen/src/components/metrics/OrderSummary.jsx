@@ -2,9 +2,11 @@ import { Chart as ChartJS, ArcElement, Legend, Tooltip } from "chart.js";
 import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import axios from "axios";
+import { useLocation } from 'react-router-dom';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 function OrderSummary({ userData }) {
+  const location = useLocation();
   const [mostOrderedItems, setMostOrderedItems] = useState([]);
 
   useEffect(() => {
@@ -29,7 +31,8 @@ function OrderSummary({ userData }) {
     };
 
     fetchMostOrderedItems();
-  }, []);
+  }, [location]);
+
   // Dummy data for the most ordered items in the menu
   // const mostOrderedItems = [
   //   { name: "Item A", quantity: 50 },

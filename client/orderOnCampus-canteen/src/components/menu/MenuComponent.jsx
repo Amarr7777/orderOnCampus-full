@@ -24,6 +24,7 @@ function MenuComponent() {
       if (res.data.data && res.data.data.ownedCanteens && res.data.data.ownedCanteens[0]) {
         setMenuItems(res.data.data.ownedCanteens[0].menu);
         setLoading(false);
+        console.log("Check");
       }
     } catch (error) {
       console.error(error);
@@ -90,7 +91,7 @@ function MenuComponent() {
           </div>
         </div>
       )}
-      <AddNewItem addNewForm={addNewForm} setAddNewForm={setAddNewForm} triggerRender={triggerRender} />
+      <AddNewItem setMenuItems={setMenuItems} addNewForm={addNewForm} setAddNewForm={setAddNewForm} triggerRender={triggerRender} />
     </>
   );
 }

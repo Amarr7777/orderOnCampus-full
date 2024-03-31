@@ -4,7 +4,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-function AddNewItem({ addNewForm, setAddNewForm, triggerRender }) {
+function AddNewItem({ setMenuItems, addNewForm, setAddNewForm, triggerRender }) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
@@ -34,11 +34,11 @@ function AddNewItem({ addNewForm, setAddNewForm, triggerRender }) {
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     if (!nameVerify || !priceVerify || !avialable) {
       alert("Fill all the mandatory fields");
       return;
     }
-    e.preventDefault();
     const data = {
       name,
       description,
@@ -46,16 +46,20 @@ function AddNewItem({ addNewForm, setAddNewForm, triggerRender }) {
       avialable,
     };
     try {
-      await axios.post(`http://localhost:5001/menu/add`, data);
-      // triggerRender();
-      setAddNewForm(false);
-      setNameVerify(false);
-      setPriceVerify(false);
+      await axios.post(`http://localhost:5001/menu/add`, data).then((res) => {
+        setName("");
+        setDescription("");
+        setPrice("");
+        setAvialable(true);
+        console.log(res.data.newMenuItem);
+        setMenuItems(prevMenuItems => [...prevMenuItems, res.data.newMenuItem]);
+        // triggerRender(); // Invoke triggerRender after successfully adding an item
+        setAddNewForm(false);
+      }).catch((err) => console.log(err));
     } catch (err) {
       console.error(err);
       alert("Failed to add new item");
     }
-    triggerRender();
   };
 
   if (!addNewForm) {
