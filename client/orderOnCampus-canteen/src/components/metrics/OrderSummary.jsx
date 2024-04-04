@@ -22,8 +22,7 @@ function OrderSummary({ userData }) {
           const response = await axios.get(
             `http://localhost:5001/most-ordered-item/${canteenId}`
           ); 
-          setMostOrderedItems(response.data.data);
-          console.log("LET ME SEE THE DATA", response.data.data);
+          setMostOrderedItems(response.data.data);          
         } catch (error) {
           console.error("Error fetching most ordered items:", error);
         }
@@ -48,12 +47,12 @@ function OrderSummary({ userData }) {
 
   return (
     <div className="flex items-center justify-center h-80 p-2">
-      <Doughnut
+      <Doughnut className="text-left flex flex-col"
         data={{
           labels: labels,
           datasets: [
             {
-              label: "Most Ordered Items",
+              label: "Quantity",
               data: data,
               backgroundColor: [
                 "#006400", // Dark green
@@ -68,7 +67,7 @@ function OrderSummary({ userData }) {
         options={{
           plugins: {
             title: {
-              display: true,
+              display: false,
               text: "Most Ordered Items",
             },
           },
